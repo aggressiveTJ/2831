@@ -13,6 +13,7 @@
 		A8DDCB0924DDAC2F00610578 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8DDCB0824DDAC2F00610578 /* Assets.xcassets */; };
 		A8DDCB0C24DDAC2F00610578 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8DDCB0B24DDAC2F00610578 /* Preview Assets.xcassets */; };
 		A8DDCB0F24DDAC2F00610578 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8DDCB0D24DDAC2F00610578 /* LaunchScreen.storyboard */; };
+		A8DDCB1724DDB4B200610578 /* MCCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DDCB1624DDB4B200610578 /* MCCalendarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		A8DDCB0B24DDAC2F00610578 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A8DDCB0E24DDAC2F00610578 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A8DDCB1024DDAC2F00610578 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A8DDCB1624DDB4B200610578 /* MCCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCCalendarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				A8DDCB0D24DDAC2F00610578 /* LaunchScreen.storyboard */,
 				A8DDCB1024DDAC2F00610578 /* Info.plist */,
 				A8DDCB0A24DDAC2F00610578 /* Preview Content */,
+				A8DDCB1624DDB4B200610578 /* MCCalendarView.swift */,
 			);
 			path = MonthlyCollage;
 			sourceTree = "<group>";
@@ -146,6 +149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8DDCB1724DDB4B200610578 /* MCCalendarView.swift in Sources */,
 				A8DDCB0324DDAC2900610578 /* AppDelegate.swift in Sources */,
 				A8DDCB0524DDAC2900610578 /* SceneDelegate.swift in Sources */,
 				A8DDCB0724DDAC2900610578 /* ContentView.swift in Sources */,
