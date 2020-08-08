@@ -83,10 +83,42 @@ struct MCCalendarView: View {
     var date: Date
     
     var body: some View {
-        VStack(alignment: .center, spacing: 5, content: {
-            headerView
-            calendarView
+        ScrollView(content: {
+            VStack(alignment: .leading, spacing: 5, content: {
+                headerView
+                calendarView
+                
+                Divider()
+                Spacer(minLength: 50)
+                
+                Button(action: {
+                }, label: {
+                    HStack(content: {
+                        Image(systemName: "pencil.circle")
+                        Text("Edit")
+                            .fontWeight(.semibold)
+                    })
+                        .padding(.horizontal)
+                        .padding(.vertical, 5)
+                        .foregroundColor(.green)
+                })
+                
+                Button(action: {
+                }, label: {
+                    HStack(content: {
+                        Image(systemName: "trash.circle")
+                        Text("Remove")
+                            .fontWeight(.semibold)
+                    })
+                        .padding(.horizontal)
+                        .padding(.vertical, 5)
+                        .foregroundColor(.red)
+                        .opacity(0.5)
+                })
+            })
+                .padding()
         })
+            .navigationBarTitle(Text("Challenge Name"))
     }
     
     private let dayHeaderString = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]

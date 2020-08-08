@@ -14,6 +14,8 @@
 		A8DDCB0C24DDAC2F00610578 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8DDCB0B24DDAC2F00610578 /* Preview Assets.xcassets */; };
 		A8DDCB0F24DDAC2F00610578 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8DDCB0D24DDAC2F00610578 /* LaunchScreen.storyboard */; };
 		A8DDCB1724DDB4B200610578 /* MCCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DDCB1624DDB4B200610578 /* MCCalendarView.swift */; };
+		A8FC7AFB24DE64EF007FC7B2 /* MCAddChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FC7AFA24DE64EF007FC7B2 /* MCAddChallengeView.swift */; };
+		A8FC7AFD24DE6CF2007FC7B2 /* MCChallengeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FC7AFC24DE6CF2007FC7B2 /* MCChallengeListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		A8DDCB0E24DDAC2F00610578 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A8DDCB1024DDAC2F00610578 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A8DDCB1624DDB4B200610578 /* MCCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCCalendarView.swift; sourceTree = "<group>"; };
+		A8FC7AFA24DE64EF007FC7B2 /* MCAddChallengeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCAddChallengeView.swift; sourceTree = "<group>"; };
+		A8FC7AFC24DE6CF2007FC7B2 /* MCChallengeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCChallengeListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,13 +63,12 @@
 			isa = PBXGroup;
 			children = (
 				A8DDCB0224DDAC2900610578 /* AppDelegate.swift */,
-				A8DDCB0424DDAC2900610578 /* SceneDelegate.swift */,
 				A8DDCB0624DDAC2900610578 /* ContentView.swift */,
-				A8DDCB0824DDAC2F00610578 /* Assets.xcassets */,
-				A8DDCB0D24DDAC2F00610578 /* LaunchScreen.storyboard */,
-				A8DDCB1024DDAC2F00610578 /* Info.plist */,
+				A8DDCB0424DDAC2900610578 /* SceneDelegate.swift */,
 				A8DDCB0A24DDAC2F00610578 /* Preview Content */,
-				A8DDCB1624DDB4B200610578 /* MCCalendarView.swift */,
+				A8FC7AFF24DE6D06007FC7B2 /* Resources */,
+				A8FC7AFE24DE6CF8007FC7B2 /* Views */,
+				A8DDCB1024DDAC2F00610578 /* Info.plist */,
 			);
 			path = MonthlyCollage;
 			sourceTree = "<group>";
@@ -76,6 +79,25 @@
 				A8DDCB0B24DDAC2F00610578 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		A8FC7AFE24DE6CF8007FC7B2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A8FC7AFA24DE64EF007FC7B2 /* MCAddChallengeView.swift */,
+				A8DDCB1624DDB4B200610578 /* MCCalendarView.swift */,
+				A8FC7AFC24DE6CF2007FC7B2 /* MCChallengeListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A8FC7AFF24DE6D06007FC7B2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A8DDCB0824DDAC2F00610578 /* Assets.xcassets */,
+				A8DDCB0D24DDAC2F00610578 /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -152,6 +174,8 @@
 				A8DDCB1724DDB4B200610578 /* MCCalendarView.swift in Sources */,
 				A8DDCB0324DDAC2900610578 /* AppDelegate.swift in Sources */,
 				A8DDCB0524DDAC2900610578 /* SceneDelegate.swift in Sources */,
+				A8FC7AFB24DE64EF007FC7B2 /* MCAddChallengeView.swift in Sources */,
+				A8FC7AFD24DE6CF2007FC7B2 /* MCChallengeListView.swift in Sources */,
 				A8DDCB0724DDAC2900610578 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
