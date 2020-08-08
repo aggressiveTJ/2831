@@ -8,15 +8,7 @@
 
 import SwiftUI
 
-fileprivate extension DateFormatter {
-    static var monthAndYear: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy. MM"
-        return formatter
-    }
-}
-
-fileprivate extension Calendar {
+private extension Calendar {
     func generateDates(inside interval: DateInterval, matching components: DateComponents) -> [Date] {
         var dates: [Date] = []
         dates.append(interval.start)
@@ -83,42 +75,12 @@ struct MCCalendarView: View {
     var date: Date
     
     var body: some View {
-        ScrollView(content: {
-            VStack(alignment: .leading, spacing: 5, content: {
-                headerView
-                calendarView
-                
-                Divider()
-                Spacer(minLength: 50)
-                
-                Button(action: {
-                }, label: {
-                    HStack(content: {
-                        Image(systemName: "pencil.circle")
-                        Text("Edit")
-                            .fontWeight(.semibold)
-                    })
-                        .padding(.horizontal)
-                        .padding(.vertical, 5)
-                        .foregroundColor(.green)
-                })
-                
-                Button(action: {
-                }, label: {
-                    HStack(content: {
-                        Image(systemName: "trash.circle")
-                        Text("Remove")
-                            .fontWeight(.semibold)
-                    })
-                        .padding(.horizontal)
-                        .padding(.vertical, 5)
-                        .foregroundColor(.red)
-                        .opacity(0.5)
-                })
-            })
-                .padding()
+        VStack(alignment: .leading, spacing: 5, content: {
+            headerView
+            calendarView
+            
+            Divider()
         })
-            .navigationBarTitle(Text("Challenge Name"))
     }
     
     private let dayHeaderString = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
@@ -131,7 +93,6 @@ struct MCCalendarView: View {
                 .padding(.bottom)
                 
             Divider()
-                .padding(.horizontal)
 
             HStack(alignment: .center, content: {
                 ForEach(dayHeaderString, id: \.self, content: { (string) in
@@ -143,7 +104,6 @@ struct MCCalendarView: View {
             })
                 
             Divider()
-                .padding(.horizontal)
         })
     }
     

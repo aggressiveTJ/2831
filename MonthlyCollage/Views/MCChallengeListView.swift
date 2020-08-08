@@ -9,29 +9,63 @@
 import SwiftUI
 
 struct MCChallengeListView: View {
-    @State var showingAddView = false
-    
-    let challenges = ["a", "b", "c"]
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @FetchRequest(entity: Challenge.entity(),
+                  sortDescriptors: [NSSortDescriptor(keyPath: \Challenge.name, ascending: true)])
+    var challenges: FetchedResults<Challenge>
+
+    @State var isPresented = false
     
     var body: some View {
         NavigationView(content: {
             List(content: {
                 ForEach(challenges, id: \.self, content: { (challenge) in
-                    NavigationLink(destination: MCCalendarView(date: Date()), label: {
-                        Text(challenge)
+                    NavigationLink(destination: MCChallengeDetailView(challenge: challenge), label: {
+                        MCChallengeListRow(challenge: challenge)
                     })
                 })
+                    .onDelete(perform: removeChallenge)
             })
-                .navigationBarTitle(Text("Challenge"))
+                .navigationBarTitle(Text("Challenges"))
                 .navigationBarItems(trailing: Button(action: {
-                    self.showingAddView.toggle()
+                    self.isPresented.toggle()
                 }, label: {
                     Image(systemName: "plus.circle")
                 }))
-                .sheet(isPresented: $showingAddView, content: {
-                    MCAddChallengeView(challengeName: .constant(self.challenges[0]))
+                .sheet(isPresented: $isPresented, content: {
+                    MCAddChallengeView(onComplete: { (id, name, date) in
+                        self.addChallenge(name: name)
+                        self.isPresented = false
+                    })
                 })
         })
+    }
+    
+    func saveContext() {
+        do {
+            try managedObjectContext.save()
+        } catch {
+            print("Error saving managed object context: \(error)")
+        }
+    }
+    
+    func addChallenge(name: String) {
+        let challenge = Challenge(context: managedObjectContext)
+        
+        challenge.id = UUID()
+        challenge.name = name
+        challenge.date = Date()
+
+        saveContext()
+    }
+    
+    func removeChallenge(at offsets: IndexSet) {
+        offsets.forEach { (index) in
+            let challenge = challenges[index]
+            self.managedObjectContext.delete(challenge)
+        }
+        
+        saveContext()
     }
 }
 
