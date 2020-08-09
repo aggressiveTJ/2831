@@ -71,6 +71,8 @@ struct MCChallengeListView: View {
 
 struct MCChallengeListView_Previews: PreviewProvider {
     static var previews: some View {
-        MCChallengeListView()
+        let context = (UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate).persistentContainer.viewContext
+        return MCChallengeListView()
+            .environment(\.managedObjectContext, context)
     }
 }

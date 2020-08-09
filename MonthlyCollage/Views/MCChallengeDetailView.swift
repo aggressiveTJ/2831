@@ -14,13 +14,13 @@ struct MCChallengeDetailView: View {
     var body: some View {
         ScrollView(content: {
             VStack(alignment: .leading, spacing: 5, content: {
+                MCCalendarView(date: challenge.date ?? Date())
+                
                 challenge.id.map({
                     Text($0.uuidString)
                 })
                     .font(.caption)
                     .foregroundColor(.gray)
-                
-                MCCalendarView(date: challenge.date ?? Date())
             
                 Spacer(minLength: 30)
                 

@@ -32,6 +32,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Create the SwiftUI view that provides the window contents.
         let context = persistentContainer.viewContext
         let contentView = MCChallengeListView().environment(\.managedObjectContext, context)
+        
+        loadPreset()
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
@@ -81,6 +83,59 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             } catch {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+        }
+    }
+    
+    private struct Preset: Codable {
+        let id: UUID
+        let name: String
+        let date: Date
+    }
+    
+    private func loadPreset() {
+        let didLoadPresetKey = "didLoadPreset"
+        let fileName = "Preset"
+        
+        if !UserDefaults.standard.bool(forKey: didLoadPresetKey) {
+            guard let file = Bundle.main.url(forResource: fileName, withExtension: "plist") else {
+                UserDefaults.standard.set(true, forKey: didLoadPresetKey)
+                return
+            }
+            
+            let data: Data
+            do {
+                data = try Data(contentsOf: file)
+            } catch {
+                fatalError("Couldn't load preset from main bundle:\n\(error)")
+            }
+            
+            let backgroundContext = persistentContainer.newBackgroundContext()
+            persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
+            
+            backgroundContext.perform {
+                let presets: [Preset]
+                
+                do {
+                    let decoder = PropertyListDecoder()
+                    presets = try decoder.decode([Preset].self, from: data)
+                } catch {
+                    fatalError("Couldn't parse preset as \([Preset].self):\n\(error)")
+                }
+                
+                do {
+                    presets.forEach({
+                        let object = Challenge(context: backgroundContext)
+                        object.id = $0.id
+                        object.name = $0.name
+                        object.date = $0.date
+                    })
+                    
+                    try backgroundContext.save()
+                    UserDefaults.standard.set(true, forKey: didLoadPresetKey)
+                } catch {
+                    print(error.localizedDescription)
+                }
             }
         }
     }
