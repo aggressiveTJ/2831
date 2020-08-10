@@ -10,6 +10,8 @@ import SwiftUI
 
 struct MCChallengeListView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.presentationMode) var presentationMode
+
     @FetchRequest(entity: Challenge.entity(),
                   sortDescriptors: [NSSortDescriptor(keyPath: \Challenge.name, ascending: true)])
     var challenges: FetchedResults<Challenge>
@@ -33,9 +35,10 @@ struct MCChallengeListView: View {
                     Image(systemName: "plus.circle")
                 }))
                 .sheet(isPresented: $isPresented, content: {
-                    MCAddChallengeView(onComplete: { (id, name, date) in
-                        self.addChallenge(name: name)
-                        self.isPresented = false
+                    MCAddChallengeView(Challenge.empty, completion: {
+                        if $0.isVaild {
+                            self.addChallenge($0)
+                        }
                     })
                 })
         })
@@ -49,12 +52,12 @@ struct MCChallengeListView: View {
         }
     }
     
-    func addChallenge(name: String) {
-        let challenge = Challenge(context: managedObjectContext)
+    func addChallenge(_ challenge: Challenge) {
+        let object = Challenge(context: managedObjectContext)
         
-        challenge.id = UUID()
-        challenge.name = name
-        challenge.date = Date()
+        object.id = challenge.id
+        object.name = challenge.name
+        object.date = challenge.date ?? Date()
 
         saveContext()
     }

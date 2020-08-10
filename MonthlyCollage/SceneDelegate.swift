@@ -97,7 +97,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let didLoadPresetKey = "didLoadPreset"
         let fileName = "Preset"
         
-        if !UserDefaults.standard.bool(forKey: didLoadPresetKey) {
+//        if !UserDefaults.standard.bool(forKey: didLoadPresetKey) {
+        if true {
             guard let file = Bundle.main.url(forResource: fileName, withExtension: "plist") else {
                 UserDefaults.standard.set(true, forKey: didLoadPresetKey)
                 return

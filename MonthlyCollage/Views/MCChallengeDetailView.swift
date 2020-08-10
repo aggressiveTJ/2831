@@ -54,3 +54,14 @@ struct MCChallengeDetailView: View {
             .navigationBarTitle(Text(challenge.name ?? "Untitled"))
     }
 }
+
+struct MCChallengeDetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        let challenge = Challenge.empty
+        challenge.id = UUID()
+        challenge.name = "Preview"
+        challenge.date = Date()
+        
+        return MCChallengeDetailView(challenge: challenge)
+    }
+}
