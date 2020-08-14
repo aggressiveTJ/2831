@@ -8,17 +8,7 @@
 
 import Foundation
 import SwiftUI
-
-extension Challenge {
-    static var empty: Challenge {
-        let context = (UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate).persistentContainer.viewContext
-        return Challenge(context: context)
-    }
-    
-    var isVaild: Bool {
-        (id != nil) && (name?.isEmpty == true) && (date != nil)
-    }
-}
+import CoreData
 
 extension DateFormatter {
     static var monthAndYear: DateFormatter {

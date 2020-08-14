@@ -7,21 +7,18 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct MCChallengeListView: View {
-    @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.presentationMode) var presentationMode
 
-    @FetchRequest(entity: Challenge.entity(),
-                  sortDescriptors: [NSSortDescriptor(keyPath: \Challenge.name, ascending: true)])
-    var challenges: FetchedResults<Challenge>
-
+    @State private var dataSource = ChallengeDataSource<Challenge>()
     @State var isPresented = false
     
     var body: some View {
         NavigationView(content: {
             List(content: {
-                ForEach(challenges, id: \.self, content: { (challenge) in
+                ForEach(dataSource.objects, id: \.self, content: { (challenge) in
                     NavigationLink(destination: MCChallengeDetailView(challenge: challenge), label: {
                         MCChallengeListRow(challenge: challenge)
                     })
@@ -35,47 +32,21 @@ struct MCChallengeListView: View {
                     Image(systemName: "plus.circle")
                 }))
                 .sheet(isPresented: $isPresented, content: {
-                    MCAddChallengeView(Challenge.empty, completion: {
-                        if $0.isVaild {
-                            self.addChallenge($0)
-                        }
-                    })
+                    MCAddChallengeView()
                 })
         })
     }
     
-    func saveContext() {
-        do {
-            try managedObjectContext.save()
-        } catch {
-            print("Error saving managed object context: \(error)")
-        }
-    }
-    
-    func addChallenge(_ challenge: Challenge) {
-        let object = Challenge(context: managedObjectContext)
-        
-        object.id = challenge.id
-        object.name = challenge.name
-        object.date = challenge.date ?? Date()
-
-        saveContext()
-    }
-    
     func removeChallenge(at offsets: IndexSet) {
         offsets.forEach { (index) in
-            let challenge = challenges[index]
-            self.managedObjectContext.delete(challenge)
+            let challenge = dataSource.objects[index]
+            challenge.delete()
         }
-        
-        saveContext()
     }
 }
 
 struct MCChallengeListView_Previews: PreviewProvider {
     static var previews: some View {
-        let context = (UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate).persistentContainer.viewContext
         return MCChallengeListView()
-            .environment(\.managedObjectContext, context)
     }
 }

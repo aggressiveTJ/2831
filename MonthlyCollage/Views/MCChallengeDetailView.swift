@@ -14,11 +14,9 @@ struct MCChallengeDetailView: View {
     var body: some View {
         ScrollView(content: {
             VStack(alignment: .leading, spacing: 5, content: {
-                MCCalendarView(date: challenge.date ?? Date())
-                
-                challenge.id.map({
-                    Text($0.uuidString)
-                })
+                MCCalendarView(date: challenge.date)
+
+                Text(challenge.id.uuidString)
                     .font(.caption)
                     .foregroundColor(.gray)
             
@@ -51,17 +49,12 @@ struct MCChallengeDetailView: View {
             })
                 .padding()
         })
-            .navigationBarTitle(Text(challenge.name ?? "Untitled"))
+            .navigationBarTitle(Text(challenge.name))
     }
 }
 
 struct MCChallengeDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        let challenge = Challenge.empty
-        challenge.id = UUID()
-        challenge.name = "Preview"
-        challenge.date = Date()
-        
-        return MCChallengeDetailView(challenge: challenge)
+        MCChallengeDetailView(challenge: Challenge.preview())
     }
 }

@@ -15,25 +15,19 @@ struct MCAddChallengeView: View {
     @State var name: String
     @State var date: Date
     
-    let challenge: Challenge?
-    let onComplete: ((Challenge) -> Void)
+    var challenge: Challenge?
     
-    var isEditing: Bool {
-        challenge?.id != nil
-    }
-    
-    init(_ challenge: Challenge, completion: @escaping ((Challenge) -> Void)) {
+    init(_ challenge: Challenge? = nil) {
         self.challenge = challenge
-        self.onComplete = completion
         
-        _id = State(initialValue: challenge.id ?? UUID())
-        _name = State(initialValue: challenge.name ?? "")
-        _date = State(initialValue: challenge.date ?? Date())
+        _id = State(initialValue: challenge?.id ?? UUID())
+        _name = State(initialValue: challenge?.name ?? "")
+        _date = State(initialValue: challenge?.date ?? Date())
     }
     
     var body: some View {
-        let navigationBarTitle = isEditing ? "Edit Challenge" : "Add New Challenge"
-        
+        let navigationBarTitle = (challenge != nil) ? "Edit Challenge" : "Add New Challenge"
+
         return NavigationView(content: {
             Form(content: {
                 Text(id.uuidString)
@@ -45,14 +39,8 @@ struct MCAddChallengeView: View {
                 })
                 
                 Section(content: {
-                    DatePicker(selection: $date, label: {
+                    DatePicker(selection: $date, displayedComponents: .date, label: {
                         Text("Start Date")
-                    })
-                })
-                
-                Section(content: {
-                    Button(action: addAction, label: {
-                        Text("Done")
                     })
                 })
             })
@@ -64,24 +52,24 @@ struct MCAddChallengeView: View {
     }
 
     private func addAction() {
-        let edited = challenge ?? Challenge.empty
-        edited.id = id
-        edited.name = name
-        edited.date = date
-
-        onComplete(edited)
         presentationMode.wrappedValue.dismiss()
+
+        guard !name.isEmpty else {
+            return
+        }
+
+        if challenge != nil {
+            challenge?.update(name: name)
+            challenge?.update(date: date)
+        } else {
+            _ = Challenge.createChallenge(name: name, id: id, date: date)
+        }
     }
 }
 
 struct MCAddChallengeView_Previews: PreviewProvider {
     static var previews: some View {
-        let challenge = Challenge.empty
-        challenge.id = UUID()
-        challenge.name = "Preview"
-        challenge.date = Date()
-        
-        return MCAddChallengeView(challenge, completion: { (_) in })
+        MCAddChallengeView(Challenge.preview())
     }
 }
 

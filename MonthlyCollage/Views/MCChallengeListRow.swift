@@ -13,20 +13,16 @@ struct MCChallengeListRow: View {
     
     var body: some View {
         VStack(alignment: .leading, content: {
-            challenge.name.map(Text.init)
+            Text(challenge.name)
                 .font(.title)
             
             HStack(content: {
-                challenge.id.map({
-                    Text($0.uuidString)
-                })
+                Text(challenge.id.uuidString)
                     .font(.caption)
                 
                 Spacer()
-                
-                challenge.date.map ({
-                    Text(DateFormatter.longStyle.string(from: $0))
-                })
+
+                Text(DateFormatter.longStyle.string(from: challenge.date))
                     .font(.caption)
             })
         })
@@ -35,12 +31,7 @@ struct MCChallengeListRow: View {
 
 struct MCChallengeListRow_Previews: PreviewProvider {
     static var previews: some View {
-        let challenge = Challenge.empty
-        challenge.id = UUID()
-        challenge.name = "Preview"
-        challenge.date = Date()
-        
-        return MCChallengeListRow(challenge: challenge)
+        MCChallengeListRow(challenge: Challenge.preview())
             .previewLayout(.fixed(width: 375, height: 70))
     }
 }
