@@ -72,6 +72,8 @@ private struct weekView: View {
 struct MCCalendarView: View {
     @Environment(\.calendar) var calendar
     
+    let gridItemLayout = Array(repeating: GridItem(.fixed(45)), count: 7)
+
     var date: Date
     
     var body: some View {
@@ -83,8 +85,6 @@ struct MCCalendarView: View {
         })
     }
     
-    private let dayHeaderString = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
-    
     private var headerView: some View {
         VStack(alignment: .center, spacing: 5, content: {
             Text(DateFormatter.monthAndYear.string(from: date))
@@ -94,8 +94,8 @@ struct MCCalendarView: View {
             
             Divider()
             
-            HStack(alignment: .center, content: {
-                ForEach(dayHeaderString, id: \.self, content: { (string) in
+            LazyVGrid(columns: gridItemLayout, content: {
+                ForEach(calendar.shortWeekdaySymbols.map({ $0.uppercased() }), id: \.self, content: { (string) in
                     Text(string)
                         .font(.caption)
                         .fontWeight(.bold)
@@ -108,12 +108,30 @@ struct MCCalendarView: View {
     }
     
     private var calendarView: some View {
-        let interval = calendar.dateInterval(of: .month, for: date) ?? DateInterval()
-        let weeks = calendar.generateDates(inside: interval, matching: DateComponents(hour: 0, minute: 0, second: 0, weekday: calendar.firstWeekday))
+        let days: [Date] = {
+            guard let monthInterval = calendar.dateInterval(of: .month, for: date) else {
+                return []
+            }
+            
+            return calendar.generateDates(inside: monthInterval, matching: DateComponents(hour: 0, minute: 0, second: 0))
+        }()
         
-        return VStack(content: {
-            ForEach(weeks, id: \.self, content: { (week) in
-                weekView(self.date, week: week)
+        var numberOfBlanks: Int {
+            calendar.component(.weekday, from: days[0]) - 1
+        }
+        
+        return LazyVGrid(columns: gridItemLayout, content: {
+            ForEach(0..<numberOfBlanks, content: { (_) in
+                Text("0")
+                    .hidden()
+            })
+            
+            ForEach(days, id: \.self, content: { (day) in
+                Text(String(calendar.component(.day, from: day)))
+                    .font(.body)
+                    .fontWeight(.thin)
+                    .frame(width: 45.0)
+                    .padding(.vertical)
             })
         })
     }
@@ -121,7 +139,6 @@ struct MCCalendarView: View {
 
 struct MCCalendarView_Previews: PreviewProvider {
     static var previews: some View {
-        let date = Date(timeInterval: 0, since: Date())
-        return MCCalendarView(date: date)
+        MCCalendarView(date: Date(timeInterval: 0, since: Date()))
     }
 }
