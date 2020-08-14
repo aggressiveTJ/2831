@@ -11,7 +11,7 @@ import CoreData
 
 struct MCChallengeListView: View {
     @Environment(\.presentationMode) var presentationMode
-
+    
     @State private var dataSource = ChallengeDataSource<Challenge>()
     @State var isPresented = false
     
@@ -23,17 +23,18 @@ struct MCChallengeListView: View {
                         MCChallengeListRow(challenge: challenge)
                     })
                 })
-                    .onDelete(perform: removeChallenge)
+                .onDelete(perform: removeChallenge)
             })
-                .navigationBarTitle(Text("Challenges"))
-                .navigationBarItems(trailing: Button(action: {
-                    self.isPresented.toggle()
-                }, label: {
-                    Image(systemName: "plus.circle")
-                }))
-                .sheet(isPresented: $isPresented, content: {
-                    MCAddChallengeView()
-                })
+            .navigationBarTitle(Text("Challenges"))
+            .navigationBarItems(trailing: Button(action: {
+                self.isPresented.toggle()
+            }, label: {
+                Image(systemName: "plus.circle")
+                    .imageScale(.large)
+            }))
+            .sheet(isPresented: $isPresented, content: {
+                MCAddChallengeView()
+            })
         })
     }
     
@@ -47,6 +48,6 @@ struct MCChallengeListView: View {
 
 struct MCChallengeListView_Previews: PreviewProvider {
     static var previews: some View {
-        return MCChallengeListView()
+        MCChallengeListView()
     }
 }

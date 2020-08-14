@@ -12,13 +12,13 @@ import CoreData
 
 
 extension Challenge {
-
+    
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Challenge> {
         return NSFetchRequest<Challenge>(entityName: "Challenge")
     }
-
+    
     @NSManaged public var date: Date
     @NSManaged public var id: UUID
     @NSManaged public var name: String
-
+    
 }

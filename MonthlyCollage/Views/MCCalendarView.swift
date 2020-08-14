@@ -91,9 +91,9 @@ struct MCCalendarView: View {
                 .font(.largeTitle)
                 .fontWeight(.ultraLight)
                 .padding(.bottom)
-                
+            
             Divider()
-
+            
             HStack(alignment: .center, content: {
                 ForEach(dayHeaderString, id: \.self, content: { (string) in
                     Text(string)
@@ -102,7 +102,7 @@ struct MCCalendarView: View {
                         .frame(width: 45.0)
                 })
             })
-                
+            
             Divider()
         })
     }
@@ -110,7 +110,7 @@ struct MCCalendarView: View {
     private var calendarView: some View {
         let interval = calendar.dateInterval(of: .month, for: date) ?? DateInterval()
         let weeks = calendar.generateDates(inside: interval, matching: DateComponents(hour: 0, minute: 0, second: 0, weekday: calendar.firstWeekday))
-    
+        
         return VStack(content: {
             ForEach(weeks, id: \.self, content: { (week) in
                 weekView(self.date, week: week)

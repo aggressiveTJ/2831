@@ -9,47 +9,42 @@
 import SwiftUI
 
 struct MCChallengeDetailView: View {
+    @State private var showsActionSheet = false
+    
     let challenge: Challenge
     
     var body: some View {
         ScrollView(content: {
             VStack(alignment: .leading, spacing: 5, content: {
-                MCCalendarView(date: challenge.date)
-
                 Text(challenge.id.uuidString)
                     .font(.caption)
                     .foregroundColor(.gray)
-            
+                
+                Divider()
                 Spacer(minLength: 30)
                 
-                Button(action: {
-                }, label: {
-                    HStack(content: {
-                        Image(systemName: "pencil.circle")
-                        Text("Edit")
-                            .fontWeight(.semibold)
-                    })
-                        .padding(.horizontal)
-                        .padding(.vertical, 5)
-                        .foregroundColor(.green)
-                })
-                
-                Button(action: {
-                }, label: {
-                    HStack(content: {
-                        Image(systemName: "trash.circle")
-                        Text("Remove")
-                            .fontWeight(.semibold)
-                    })
-                        .padding(.horizontal)
-                        .padding(.vertical, 5)
-                        .foregroundColor(.red)
-                        .opacity(0.5)
-                })
+                MCCalendarView(date: challenge.date)
             })
-                .padding()
+            .padding()
         })
-            .navigationBarTitle(Text(challenge.name))
+        .navigationBarTitle(Text(challenge.name))
+        .navigationBarItems(trailing: moreButton)
+    }
+    
+    private var moreButton: some View {
+        Button(action: {
+            self.showsActionSheet = true
+        }, label: {
+            Image(systemName: "ellipsis.circle")
+                .imageScale(/*@START_MENU_TOKEN@*/.large/*@END_MENU_TOKEN@*/)
+        })
+        .actionSheet(isPresented: $showsActionSheet, content: {
+            ActionSheet(title: Text(""), buttons: [
+                .default(Text("Edit"), action: {}),
+                .destructive(Text("Remove"), action: {}),
+                .cancel()
+            ])
+        })
     }
 }
 

@@ -16,10 +16,4 @@ extension DateFormatter {
         formatter.dateFormat = "yyyy. MM"
         return formatter
     }
-    
-    static var longStyle: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        return formatter
-    }
 }

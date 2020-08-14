@@ -12,26 +12,26 @@ struct MCChallengeListRow: View {
     let challenge: Challenge
     
     var body: some View {
-        VStack(alignment: .leading, content: {
+        VStack(alignment: .leading, spacing: 10, content: {
             Text(challenge.name)
-                .font(.title)
+                .font(.title2)
+                .fontWeight(.bold)
+                .lineLimit(1)
             
-            HStack(content: {
-                Text(challenge.id.uuidString)
-                    .font(.caption)
-                
-                Spacer()
-
-                Text(DateFormatter.longStyle.string(from: challenge.date))
-                    .font(.caption)
-            })
+            Divider()
+            
+            Text(challenge.id.uuidString)
+                .font(.caption)
+                .foregroundColor(.gray)
+                .lineLimit(1)
         })
+        .padding(.trailing, 5.0)
     }
 }
 
 struct MCChallengeListRow_Previews: PreviewProvider {
     static var previews: some View {
         MCChallengeListRow(challenge: Challenge.preview())
-            .previewLayout(.fixed(width: 375, height: 70))
+            .previewLayout(.fixed(width: 375, height: 65))
     }
 }

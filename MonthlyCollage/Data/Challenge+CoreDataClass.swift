@@ -15,7 +15,7 @@ public class Challenge: NSManagedObject {
     // MARK: Helpers
     class func count() -> Int {
         let fetchRequest: NSFetchRequest<Challenge> = Challenge.fetchRequest()
-
+        
         do {
             let count = try DataManager.shared.context.count(for: fetchRequest)
             return count
@@ -23,12 +23,12 @@ public class Challenge: NSManagedObject {
             fatalError("Unresolved error \(error), \(error.userInfo)")
         }
     }
-
+    
     class func allChallenge() -> [Challenge] {
         let datasource = ChallengeDataSource<Challenge>()
         return datasource.fetch()
     }
-
+    
     #if DEBUG
     class func preview() -> Challenge {
         let challenge = Challenge.allChallenge()
@@ -48,22 +48,22 @@ extension Challenge {
         challenge.id = id
         challenge.name = name
         challenge.date = date
-
+        
         DataManager.shared.save()
-
+        
         return challenge
     }
-
+    
     public func update(name: String) {
         self.name = name
         DataManager.shared.save()
     }
-
+    
     public func update(date: Date) {
         self.date = date
         DataManager.shared.save()
     }
-
+    
     public func delete() {
         DataManager.shared.context.delete(self)
     }

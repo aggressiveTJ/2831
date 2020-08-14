@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MCMainTabView: View {
     @State private var selectedTabIndex: Int = 0
-
+    
     var body: some View {
         TabView(selection: $selectedTabIndex, content: {
             MCChallengeListView()
@@ -19,7 +19,7 @@ struct MCMainTabView: View {
                     Text("Challenges")
                 })
                 .tag(0)
-
+            
             EmptyView()
                 .tabItem({
                     Image(systemName: "square.grid.4x3.fill")

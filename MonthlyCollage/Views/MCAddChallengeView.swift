@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MCAddChallengeView: View {
     @Environment(\.presentationMode) var presentationMode
-
+    
     @State var id: UUID
     @State var name: String
     @State var date: Date
@@ -27,7 +27,7 @@ struct MCAddChallengeView: View {
     
     var body: some View {
         let navigationBarTitle = (challenge != nil) ? "Edit Challenge" : "Add New Challenge"
-
+        
         return NavigationView(content: {
             Form(content: {
                 Text(id.uuidString)
@@ -38,26 +38,26 @@ struct MCAddChallengeView: View {
                     TextField("Title", text: $name)
                 })
                 
-                Section(content: {
+                Section(header: Text("Start Date"), content: {
                     DatePicker(selection: $date, displayedComponents: .date, label: {
-                        Text("Start Date")
+                        EmptyView()
                     })
                 })
             })
-                .navigationBarTitle(Text(navigationBarTitle), displayMode: .inline)
-                .navigationBarItems(trailing: Button(action: addAction, label: {
-                    Text("Done")
-                }))
+            .navigationBarTitle(Text(navigationBarTitle), displayMode: .inline)
+            .navigationBarItems(trailing: Button(action: addAction, label: {
+                Text("Done")
+            }))
         })
     }
-
+    
     private func addAction() {
         presentationMode.wrappedValue.dismiss()
-
+        
         guard !name.isEmpty else {
             return
         }
-
+        
         if challenge != nil {
             challenge?.update(name: name)
             challenge?.update(date: date)
