@@ -26,53 +26,10 @@ private extension Calendar {
     }
 }
 
-private struct weekView: View {
-    @Environment(\.calendar) var calendar
-    
-    let date: Date
-    let week: Date
-    
-    init(_ date: Date, week: Date) {
-        self.date = date
-        self.week = week
-    }
-    
-    private var days: [Date] {
-        guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: week) else {
-            return []
-        }
-        
-        return calendar.generateDates(inside: weekInterval, matching: DateComponents(hour: 0, minute: 0, second: 0))
-    }
-    
-    var body: some View {
-        HStack(content: {
-            ForEach(days, id: \.self, content: { (day) in
-                HStack {
-                    if self.calendar.isDate(self.date, equalTo: day, toGranularity: .month) {
-                        self.dayText(from: day)
-                            .frame(width: 45, height: 45)
-                    } else {
-                        self.dayText(from: day)
-                            .frame(width: 45, height: 45)
-                            .hidden()
-                    }
-                }
-            })
-        })
-    }
-    
-    private func dayText(from date: Date) -> Text {
-        Text(String(calendar.component(.day, from: date)))
-            .font(.body)
-            .fontWeight(.thin)
-    }
-}
-
 struct MCCalendarView: View {
     @Environment(\.calendar) var calendar
     
-    let gridItemLayout = Array(repeating: GridItem(.fixed(45)), count: 7)
+    private let gridItemLayout = Array(repeating: GridItem(.flexible(minimum: 10, maximum: (UIScreen.main.fixedCoordinateSpace.bounds.width / 8))), count: 7)
 
     var date: Date
     
@@ -83,6 +40,7 @@ struct MCCalendarView: View {
             
             Divider()
         })
+        .padding()
     }
     
     private var headerView: some View {
@@ -99,7 +57,6 @@ struct MCCalendarView: View {
                     Text(string)
                         .font(.caption)
                         .fontWeight(.bold)
-                        .frame(width: 45.0)
                 })
             })
             
@@ -127,12 +84,58 @@ struct MCCalendarView: View {
             })
             
             ForEach(days, id: \.self, content: { (day) in
-                Text(String(calendar.component(.day, from: day)))
+                DayView(date: day)
+            })
+        })
+    }
+}
+
+private struct DayView: View {
+    @Environment(\.calendar) var calendar
+    @State var showingImagePicker = false
+    
+    private let date: Date
+    private var image: Image?
+    private var isAvailable: Bool {
+        date <= Date()
+    }
+    
+    init(date: Date = Date()) {
+        self.date = date
+    }
+    
+    var body: some View {
+        ZStack(content: {
+            if isAvailable {
+                image?
+                    .resizable()
+                
+                Button(action: {
+                    self.showingImagePicker = true
+                }, label: {
+                    Text(String(calendar.component(.day, from: date)))
+                        .font(.body)
+                        .fontWeight(.thin)
+                        .foregroundColor(.black)
+                })
+                .padding(.vertical)
+                .frame(maxWidth: .infinity)
+            } else {
+                Text(String(calendar.component(.day, from: date)))
                     .font(.body)
                     .fontWeight(.thin)
-                    .frame(width: 45.0)
+                    .foregroundColor(.gray)
                     .padding(.vertical)
-            })
+                    .frame(maxWidth: .infinity)
+            }
+            
+        })
+        .sheet(isPresented: $showingImagePicker, content: {
+            if isAvailable {
+                ImagePicker(sourceType: .savedPhotosAlbum, onImagePicked: { (image) in
+                    
+                })
+            }
         })
     }
 }
