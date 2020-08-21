@@ -15,15 +15,26 @@ struct MCChallengeListView: View {
     @State private var dataSource = ChallengeDataSource<Challenge>()
     @State var isPresented = false
     
+    private var months: [String: [Challenge]] {
+        Dictionary(grouping: dataSource.objects) { $0.date.headerTitle }
+    }
+    
     var body: some View {
-        NavigationView(content: {
+        let keys = months.map { $0.key }
+        
+        return NavigationView(content: {
             List(content: {
-                ForEach(dataSource.objects, id: \.self, content: { (challenge) in
-                    NavigationLink(destination: MCChallengeDetailView(challenge: challenge), label: {
-                        MCChallengeListRow(challenge: challenge)
-                    })
+                ForEach(keys.indices, content: { (key) in
+                    Section(header: Text(keys[key]),
+                            content: {
+                                ForEach(months[keys[key]] ?? [], content: { (challenge) in
+                                    NavigationLink(destination: MCChallengeDetailView(challenge: challenge), label: {
+                                        MCChallengeListRow(challenge: challenge)
+                                    })
+                                })
+                                .onDelete(perform: removeChallenge)
+                            })
                 })
-                .onDelete(perform: removeChallenge)
             })
             .navigationBarTitle(Text("Challenges"))
             .navigationBarItems(trailing: Button(action: {

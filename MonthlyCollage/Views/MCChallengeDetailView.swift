@@ -50,6 +50,11 @@ struct MCChallengeDetailView: View {
 
 struct MCChallengeDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MCChallengeDetailView(challenge: Challenge.preview())
+        Group {
+            MCChallengeDetailView(challenge: Challenge.preview())
+            MCChallengeDetailView(challenge: Challenge.preview())
+            MCChallengeDetailView(challenge: Challenge.preview())
+                .preferredColorScheme(.dark)
+        }
     }
 }

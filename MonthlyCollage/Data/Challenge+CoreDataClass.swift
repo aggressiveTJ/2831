@@ -11,7 +11,7 @@ import Foundation
 import CoreData
 
 @objc(Challenge)
-public class Challenge: NSManagedObject {
+public class Challenge: NSManagedObject, Identifiable {
     // MARK: Helpers
     class func count() -> Int {
         let fetchRequest: NSFetchRequest<Challenge> = Challenge.fetchRequest()

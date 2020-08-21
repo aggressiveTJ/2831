@@ -40,7 +40,6 @@ struct MCCalendarView: View {
             
             Divider()
         })
-        .padding()
     }
     
     private var headerView: some View {
@@ -116,19 +115,21 @@ private struct DayView: View {
                     Text(String(calendar.component(.day, from: date)))
                         .font(.body)
                         .fontWeight(.thin)
-                        .foregroundColor(.black)
+                        .frame(maxWidth: .infinity)
                 })
-                .padding(.vertical)
+                .padding(.top, 15)
+                .padding(.bottom, 10)
                 .frame(maxWidth: .infinity)
+                .buttonStyle(PlainButtonStyle())
             } else {
                 Text(String(calendar.component(.day, from: date)))
                     .font(.body)
-                    .fontWeight(.thin)
+                    .fontWeight(.ultraLight)
                     .foregroundColor(.gray)
-                    .padding(.vertical)
+                    .padding(.top, 15)
+                    .padding(.bottom, 10)
                     .frame(maxWidth: .infinity)
             }
-            
         })
         .sheet(isPresented: $showingImagePicker, content: {
             if isAvailable {
