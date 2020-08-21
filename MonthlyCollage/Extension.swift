@@ -21,7 +21,7 @@ extension Date {
         "\(year). \(month)"
     }
     var postfix: String {
-        "_\(year)_\(month)"
+        "\(year)_\(month)_\(Calendar.current.component(.day, from: self))"
     }
     
     func isInSameMonth(with another: Date) -> Bool {
@@ -38,7 +38,18 @@ extension DateFormatter {
 }
 
 extension UIImage {
-    func save(in path: URL) {
+    func save(in path: URL) -> Bool {
+        guard let data = jpegData(compressionQuality: 0.8) else {
+            return false
+        }
         
+        do {
+            try data.write(to: path)
+        } catch {
+            print("[ERROR] \(error.localizedDescription)")
+            return false
+        }
+        
+        return true
     }
 }

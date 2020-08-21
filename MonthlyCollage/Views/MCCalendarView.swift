@@ -30,8 +30,8 @@ struct MCCalendarView: View {
     @Environment(\.calendar) var calendar
     
     private let gridItemLayout = Array(repeating: GridItem(.flexible(minimum: 10, maximum: (UIScreen.main.fixedCoordinateSpace.bounds.width / 8))), count: 7)
-
-    var date: Date
+    
+    let challenge: Challenge
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5, content: {
@@ -44,7 +44,7 @@ struct MCCalendarView: View {
     
     private var headerView: some View {
         VStack(alignment: .center, spacing: 5, content: {
-            Text(DateFormatter.monthAndYear.string(from: date))
+            Text(DateFormatter.monthAndYear.string(from: challenge.date))
                 .font(.largeTitle)
                 .fontWeight(.ultraLight)
                 .padding(.bottom)
@@ -65,7 +65,7 @@ struct MCCalendarView: View {
     
     private var calendarView: some View {
         let days: [Date] = {
-            guard let monthInterval = calendar.dateInterval(of: .month, for: date) else {
+            guard let monthInterval = calendar.dateInterval(of: .month, for: challenge.date) else {
                 return []
             }
             
@@ -83,7 +83,7 @@ struct MCCalendarView: View {
             })
             
             ForEach(days, id: \.self, content: { (day) in
-                DayView(date: day)
+                DayView(challenge: challenge, date: day)
             })
         })
     }
@@ -93,14 +93,21 @@ private struct DayView: View {
     @Environment(\.calendar) var calendar
     @State var showingImagePicker = false
     
+    let challenge: Challenge
+    
     private let date: Date
     private var image: Image?
     private var isAvailable: Bool {
         date <= Date()
     }
     
-    init(date: Date = Date()) {
+    init(challenge: Challenge, date: Date = Date()) {
+        self.challenge = challenge
         self.date = date
+        
+        if let uiImage = challenge.image(with: date) {
+            self.image = Image(uiImage: uiImage)
+        }
     }
     
     var body: some View {
@@ -108,33 +115,58 @@ private struct DayView: View {
             if isAvailable {
                 image?
                     .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .opacity(0.8)
+                    .layoutPriority(-1)
+                    .clipShape(RoundedRectangle(cornerRadius: 3))
+                    .clipped()
                 
                 Button(action: {
                     self.showingImagePicker = true
                 }, label: {
-                    Text(String(calendar.component(.day, from: date)))
-                        .font(.body)
-                        .fontWeight(.thin)
-                        .frame(maxWidth: .infinity)
+                    if challenge.isComplete(with: date) {
+                        VStack(content: {
+                            Text(String(calendar.component(.day, from: date)))
+                                .font(.body)
+                                .fontWeight(.bold)
+                                .frame(maxWidth: .infinity)
+                                .padding(.top, 15)
+                                .padding(.bottom, 10)
+                                .foregroundColor(.white)
+                                .background(Color.black.opacity(0.7))
+                                .opacity(0.7)
+                                .shadow(radius: 1)
+                        })
+                    } else {
+                        VStack(alignment: .leading, content: {
+                            Text(String(calendar.component(.day, from: date)))
+                                .font(.body)
+                                .fontWeight(.thin)
+                                .frame(maxWidth: .infinity)
+                                .padding(.top, 15)
+                                .padding(.bottom, 10)
+                        })
+                    }
                 })
-                .padding(.top, 15)
-                .padding(.bottom, 10)
                 .frame(maxWidth: .infinity)
+                .overlay(RoundedRectangle(cornerRadius: 3)
+                            .stroke(Color.gray, lineWidth: 0.5))
                 .buttonStyle(PlainButtonStyle())
             } else {
                 Text(String(calendar.component(.day, from: date)))
                     .font(.body)
                     .fontWeight(.ultraLight)
-                    .foregroundColor(.gray)
                     .padding(.top, 15)
                     .padding(.bottom, 10)
                     .frame(maxWidth: .infinity)
+                    .opacity(0.3)
             }
         })
+        .clipped()
         .sheet(isPresented: $showingImagePicker, content: {
             if isAvailable {
                 ImagePicker(sourceType: .savedPhotosAlbum, onImagePicked: { (image) in
-                    
+                    _ = image.save(in: challenge.imagePath(with: date))
                 })
             }
         })
@@ -143,6 +175,6 @@ private struct DayView: View {
 
 struct MCCalendarView_Previews: PreviewProvider {
     static var previews: some View {
-        MCCalendarView(date: Date(timeInterval: 0, since: Date()))
+        MCCalendarView(challenge: Challenge.preview())
     }
 }

@@ -8,6 +8,7 @@
 //
 
 import Foundation
+import UIKit
 import CoreData
 
 @objc(Challenge)
@@ -67,4 +68,34 @@ extension Challenge {
     public func delete() {
         DataManager.shared.context.delete(self)
     }
+}
+
+extension Challenge {
+    var baseDirectory: URL {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        return documentsDirectory.appendingPathComponent(id.uuidString, isDirectory: true)
+    }
+    
+    func image(with date: Date) -> UIImage? {
+        do {
+            let imageData = try Data(contentsOf: imagePath(with: date))
+            return UIImage(data: imageData)
+        } catch {
+            return nil
+        }
+    }
+    
+    func imagePath(with date: Date) -> URL {
+        let fileManager = FileManager()
+        if !fileManager.fileExists(atPath: baseDirectory.path) {
+            try? fileManager.createDirectory(at: baseDirectory, withIntermediateDirectories: true, attributes: nil)
+        }
+        
+        return baseDirectory.appendingPathComponent("\(id.uuidString)_\(date.postfix).jpg")
+    }
+    
+    func isComplete(with date: Date) -> Bool {
+        FileManager().fileExists(atPath: imagePath(with: date).path)
+    }
+    
 }

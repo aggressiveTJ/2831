@@ -23,7 +23,7 @@ struct MCChallengeDetailView: View {
                 Divider()
                 Spacer(minLength: 30)
                 
-                MCCalendarView(date: challenge.date)
+                MCCalendarView(challenge: challenge)
             })
             .padding()
         })
