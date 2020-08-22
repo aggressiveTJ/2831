@@ -30,6 +30,7 @@ struct MCCalendarView: View {
     @Environment(\.calendar) var calendar
     
     private let gridItemLayout = Array(repeating: GridItem(.flexible(minimum: 10, maximum: (UIScreen.main.fixedCoordinateSpace.bounds.width / 8))), count: 7)
+
     
     let challenge: Challenge
     
@@ -60,6 +61,7 @@ struct MCCalendarView: View {
             })
             
             Divider()
+                .padding(.bottom, 10)
         })
     }
     
@@ -118,8 +120,6 @@ private struct DayView: View {
                     .aspectRatio(contentMode: .fill)
                     .opacity(0.8)
                     .layoutPriority(-1)
-                    .clipShape(RoundedRectangle(cornerRadius: 3))
-                    .clipped()
                 
                 Button(action: {
                     self.showingImagePicker = true
@@ -130,8 +130,7 @@ private struct DayView: View {
                                 .font(.body)
                                 .fontWeight(.bold)
                                 .frame(maxWidth: .infinity)
-                                .padding(.top, 15)
-                                .padding(.bottom, 10)
+                                .padding(.vertical, 10)
                                 .foregroundColor(.white)
                                 .background(Color.black.opacity(0.7))
                                 .opacity(0.7)
@@ -143,25 +142,24 @@ private struct DayView: View {
                                 .font(.body)
                                 .fontWeight(.thin)
                                 .frame(maxWidth: .infinity)
-                                .padding(.top, 15)
-                                .padding(.bottom, 10)
+                                .padding(.vertical, 10)
+                                .overlay(RoundedRectangle(cornerRadius: 3)
+                                            .stroke(Color.gray, lineWidth: 0.5))
                         })
                     }
                 })
-                .frame(maxWidth: .infinity)
-                .overlay(RoundedRectangle(cornerRadius: 3)
-                            .stroke(Color.gray, lineWidth: 0.5))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .buttonStyle(PlainButtonStyle())
             } else {
                 Text(String(calendar.component(.day, from: date)))
                     .font(.body)
                     .fontWeight(.ultraLight)
-                    .padding(.top, 15)
-                    .padding(.bottom, 10)
                     .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
                     .opacity(0.3)
             }
         })
+        .clipShape(RoundedRectangle(cornerRadius: 3))
         .clipped()
         .sheet(isPresented: $showingImagePicker, content: {
             if isAvailable {

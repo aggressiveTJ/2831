@@ -13,7 +13,6 @@ import CoreData
 
 @objc(Challenge)
 public class Challenge: NSManagedObject, Identifiable {
-    // MARK: Helpers
     class func count() -> Int {
         let fetchRequest: NSFetchRequest<Challenge> = Challenge.fetchRequest()
         
@@ -105,7 +104,7 @@ extension Challenge {
         do {
             for path in try fileManager.contentsOfDirectory(atPath: baseDirectory.path).sorted() {
                 if path.hasPrefix(id.uuidString),
-                   let image = UIImage(data: try Data(contentsOf: baseDirectory.appendingPathComponent(path, isDirectory: false))) {
+                   let image = UIImage(contentsOfFile: baseDirectory.appendingPathComponent(path, isDirectory: false).path) {
                     images.append(image)
                 }
             }

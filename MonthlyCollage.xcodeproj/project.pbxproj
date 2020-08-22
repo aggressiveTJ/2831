@@ -12,11 +12,16 @@
 		6878884224E27E4D0075B93A /* ChallengeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6878884124E27E4D0075B93A /* ChallengeDataSource.swift */; };
 		6878884824E2A2330075B93A /* Challenge+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6878884624E2A2330075B93A /* Challenge+CoreDataClass.swift */; };
 		6878884924E2A2330075B93A /* Challenge+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6878884724E2A2330075B93A /* Challenge+CoreDataProperties.swift */; };
+		A819665024F1735A00336F29 /* Achievement+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819664E24F1735A00336F29 /* Achievement+CoreDataClass.swift */; };
+		A819665124F1735A00336F29 /* Achievement+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819664F24F1735A00336F29 /* Achievement+CoreDataProperties.swift */; };
 		A82CDAD824DF894D000C3312 /* Preset.plist in Resources */ = {isa = PBXBuildFile; fileRef = A82CDAD724DF894D000C3312 /* Preset.plist */; };
 		A842728B24DEFC9E00EAD1A7 /* Challenges.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A842728924DEFC9E00EAD1A7 /* Challenges.xcdatamodeld */; };
 		A842729A24DF0B5700EAD1A7 /* MCChallengeListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842729924DF0B5700EAD1A7 /* MCChallengeListRow.swift */; };
 		A842729D24DF0E3A00EAD1A7 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842729C24DF0E3A00EAD1A7 /* Extension.swift */; };
 		A8745B5B24ECB89D00065587 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8745B5A24ECB89D00065587 /* ImagePicker.swift */; };
+		A89521E424F17FC800E1003A /* MCOmakeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89521E324F17FC800E1003A /* MCOmakeListView.swift */; };
+		A89521E624F1800600E1003A /* AchievementDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89521E524F1800600E1003A /* AchievementDataSource.swift */; };
+		A89521E824F183C400E1003A /* MCOmakeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89521E724F183C400E1003A /* MCOmakeDetailView.swift */; };
 		A8DDCB0324DDAC2900610578 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DDCB0224DDAC2900610578 /* AppDelegate.swift */; };
 		A8DDCB0524DDAC2900610578 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DDCB0424DDAC2900610578 /* SceneDelegate.swift */; };
 		A8DDCB0924DDAC2F00610578 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8DDCB0824DDAC2F00610578 /* Assets.xcassets */; };
@@ -34,11 +39,16 @@
 		6878884124E27E4D0075B93A /* ChallengeDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeDataSource.swift; sourceTree = "<group>"; };
 		6878884624E2A2330075B93A /* Challenge+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Challenge+CoreDataClass.swift"; sourceTree = "<group>"; };
 		6878884724E2A2330075B93A /* Challenge+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Challenge+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A819664E24F1735A00336F29 /* Achievement+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Achievement+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A819664F24F1735A00336F29 /* Achievement+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Achievement+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A82CDAD724DF894D000C3312 /* Preset.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Preset.plist; sourceTree = "<group>"; };
 		A842728A24DEFC9E00EAD1A7 /* Challenge.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Challenge.xcdatamodel; sourceTree = "<group>"; };
 		A842729924DF0B5700EAD1A7 /* MCChallengeListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCChallengeListRow.swift; sourceTree = "<group>"; };
 		A842729C24DF0E3A00EAD1A7 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		A8745B5A24ECB89D00065587 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		A89521E324F17FC800E1003A /* MCOmakeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCOmakeListView.swift; sourceTree = "<group>"; };
+		A89521E524F1800600E1003A /* AchievementDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementDataSource.swift; sourceTree = "<group>"; };
+		A89521E724F183C400E1003A /* MCOmakeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCOmakeDetailView.swift; sourceTree = "<group>"; };
 		A8DDCAFF24DDAC2900610578 /* MonthlyCollage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MonthlyCollage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8DDCB0224DDAC2900610578 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A8DDCB0424DDAC2900610578 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -66,6 +76,9 @@
 		6878883E24E273700075B93A /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				A819664E24F1735A00336F29 /* Achievement+CoreDataClass.swift */,
+				A819664F24F1735A00336F29 /* Achievement+CoreDataProperties.swift */,
+				A89521E524F1800600E1003A /* AchievementDataSource.swift */,
 				6878884624E2A2330075B93A /* Challenge+CoreDataClass.swift */,
 				6878884724E2A2330075B93A /* Challenge+CoreDataProperties.swift */,
 				6878884124E27E4D0075B93A /* ChallengeDataSource.swift */,
@@ -118,13 +131,15 @@
 		A8FC7AFE24DE6CF8007FC7B2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A8745B5A24ECB89D00065587 /* ImagePicker.swift */,
 				A8FC7AFA24DE64EF007FC7B2 /* MCAddChallengeView.swift */,
 				A8DDCB1624DDB4B200610578 /* MCCalendarView.swift */,
 				A8FC7B0524DE7887007FC7B2 /* MCChallengeDetailView.swift */,
-				A8FC7AFC24DE6CF2007FC7B2 /* MCChallengeListView.swift */,
 				A842729924DF0B5700EAD1A7 /* MCChallengeListRow.swift */,
+				A8FC7AFC24DE6CF2007FC7B2 /* MCChallengeListView.swift */,
 				6878882C24E228780075B93A /* MCMainTabView.swift */,
-				A8745B5A24ECB89D00065587 /* ImagePicker.swift */,
+				A89521E324F17FC800E1003A /* MCOmakeListView.swift */,
+				A89521E724F183C400E1003A /* MCOmakeDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -210,19 +225,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A89521E424F17FC800E1003A /* MCOmakeListView.swift in Sources */,
 				A842729D24DF0E3A00EAD1A7 /* Extension.swift in Sources */,
 				6878884924E2A2330075B93A /* Challenge+CoreDataProperties.swift in Sources */,
 				A8DDCB1724DDB4B200610578 /* MCCalendarView.swift in Sources */,
+				A819665124F1735A00336F29 /* Achievement+CoreDataProperties.swift in Sources */,
+				A89521E824F183C400E1003A /* MCOmakeDetailView.swift in Sources */,
 				A8DDCB0324DDAC2900610578 /* AppDelegate.swift in Sources */,
 				6878884224E27E4D0075B93A /* ChallengeDataSource.swift in Sources */,
 				A842729A24DF0B5700EAD1A7 /* MCChallengeListRow.swift in Sources */,
 				A8DDCB0524DDAC2900610578 /* SceneDelegate.swift in Sources */,
+				A819665024F1735A00336F29 /* Achievement+CoreDataClass.swift in Sources */,
 				6878884824E2A2330075B93A /* Challenge+CoreDataClass.swift in Sources */,
 				A8FC7AFB24DE64EF007FC7B2 /* MCAddChallengeView.swift in Sources */,
 				A8FC7AFD24DE6CF2007FC7B2 /* MCChallengeListView.swift in Sources */,
 				A8FC7B0624DE7887007FC7B2 /* MCChallengeDetailView.swift in Sources */,
 				6878883D24E273640075B93A /* DataManager.swift in Sources */,
 				A8745B5B24ECB89D00065587 /* ImagePicker.swift in Sources */,
+				A89521E624F1800600E1003A /* AchievementDataSource.swift in Sources */,
 				A842728B24DEFC9E00EAD1A7 /* Challenges.xcdatamodeld in Sources */,
 				6878882D24E228780075B93A /* MCMainTabView.swift in Sources */,
 			);

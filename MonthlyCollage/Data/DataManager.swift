@@ -38,17 +38,13 @@ final class DataManager: NSObject {
     }
     
     // MARK: - Database setup
-    
     public class func initialDbSetup() -> Void {
         if Challenge.count() == 0 {
-            for i in 0...4 {
-                _ = Challenge.createChallenge(name: "dummy \(i)")
-            }
+            _ = Challenge.createChallenge(name: "New Challenge")
         }
     }
     
     // MARK: - Managed Object Helpers
-    
     class func executeBlockAndCommit(_ block: @escaping () -> Void) {
         block()
         DataManager.shared.save()

@@ -10,6 +10,7 @@ import SwiftUI
 
 struct MCChallengeDetailView: View {
     @State private var showsActionSheet = false
+    @Environment(\.presentationMode) var presentationMode
 
     let challenge: Challenge
     
@@ -27,7 +28,13 @@ struct MCChallengeDetailView: View {
                 
                 Button(action: {
                     if let image = challenge.images().collage(itemSize: CGSize(width: 200, height: 200), date: challenge.date) {
-                           UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+                        let achievement = Achievement.create(from: challenge)
+                        
+                        if let url = achievement.imageURL {
+                            _ = image.save(in: url)
+                        }
+                        
+                        self.presentationMode.wrappedValue.dismiss()
                     }
                 }, label: {
                     Text("Export Collage")
@@ -59,7 +66,6 @@ struct MCChallengeDetailView: View {
 struct MCChallengeDetailView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            MCChallengeDetailView(challenge: Challenge.preview())
             MCChallengeDetailView(challenge: Challenge.preview())
             MCChallengeDetailView(challenge: Challenge.preview())
                 .preferredColorScheme(.dark)

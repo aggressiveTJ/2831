@@ -32,7 +32,7 @@ struct MCChallengeListView: View {
                                         MCChallengeListRow(challenge: challenge)
                                     })
                                 })
-                                .onDelete(perform: removeChallenge)
+                                    .onDelete(perform: removeChallenge)
                             })
                 })
             })

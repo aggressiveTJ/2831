@@ -20,7 +20,7 @@ struct MCMainTabView: View {
                 })
                 .tag(0)
             
-            EmptyView()
+            MCOmakeListView()
                 .tabItem({
                     Image(systemName: "square.grid.4x3.fill")
                     Text("Omake")
