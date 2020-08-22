@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MCChallengeDetailView: View {
     @State private var showsActionSheet = false
-    
+
     let challenge: Challenge
     
     var body: some View {
@@ -24,6 +24,14 @@ struct MCChallengeDetailView: View {
                 Spacer(minLength: 30)
                 
                 MCCalendarView(challenge: challenge)
+                
+                Button(action: {
+                    if let image = challenge.images().collage(itemSize: CGSize(width: 200, height: 200), date: challenge.date) {
+                           UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+                    }
+                }, label: {
+                    Text("Export Collage")
+                })
             })
             .padding()
         })

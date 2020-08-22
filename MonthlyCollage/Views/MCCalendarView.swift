@@ -44,7 +44,7 @@ struct MCCalendarView: View {
     
     private var headerView: some View {
         VStack(alignment: .center, spacing: 5, content: {
-            Text(DateFormatter.monthAndYear.string(from: challenge.date))
+            Text(challenge.date.headerTitle)
                 .font(.largeTitle)
                 .fontWeight(.ultraLight)
                 .padding(.bottom)

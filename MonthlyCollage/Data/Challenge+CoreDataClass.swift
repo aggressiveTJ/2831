@@ -98,4 +98,21 @@ extension Challenge {
         FileManager().fileExists(atPath: imagePath(with: date).path)
     }
     
+    func images() -> [UIImage] {
+        var images: [UIImage] = []
+        let fileManager = FileManager()
+
+        do {
+            for path in try fileManager.contentsOfDirectory(atPath: baseDirectory.path).sorted() {
+                if path.hasPrefix(id.uuidString),
+                   let image = UIImage(data: try Data(contentsOf: baseDirectory.appendingPathComponent(path, isDirectory: false))) {
+                    images.append(image)
+                }
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        return images
+    }
 }
