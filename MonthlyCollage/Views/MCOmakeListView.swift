@@ -29,7 +29,7 @@ struct MCOmakeListView: View {
                                         Text(achievement.name)
                                     })
                                 })
-                                    .onDelete(perform: removeAchievement)
+                                .onDelete(perform: removeAchievement)
                             })
                 })
             })

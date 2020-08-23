@@ -27,13 +27,13 @@ struct MCChallengeDetailView: View {
                 MCCalendarView(challenge: challenge)
                 
                 Button(action: {
-                    if let image = challenge.images().collage(itemSize: CGSize(width: 200, height: 200), date: challenge.date) {
+                    if let image = CollageMaker.collage(with: challenge.collageItems, itemSize: CGSize(width: 200, height: 200)) {
                         let achievement = Achievement.create(from: challenge)
                         
                         if let url = achievement.imageURL {
                             _ = image.save(in: url)
                         }
-                        
+                    
                         self.presentationMode.wrappedValue.dismiss()
                     }
                 }, label: {

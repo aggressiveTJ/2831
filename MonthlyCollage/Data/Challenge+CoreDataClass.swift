@@ -75,13 +75,22 @@ extension Challenge {
         return documentsDirectory.appendingPathComponent(id.uuidString, isDirectory: true)
     }
     
-    func image(with date: Date) -> UIImage? {
-        do {
-            let imageData = try Data(contentsOf: imagePath(with: date))
-            return UIImage(data: imageData)
-        } catch {
-            return nil
+    var collageItems: [CollageItem] {
+        var items: [CollageItem] = []
+
+        guard let monthInterval = Calendar.current.dateInterval(of: .month, for: date) else {
+            return []
         }
+        
+        for date in Calendar.current.generateDates(inside: monthInterval, matching: DateComponents(hour: 0, minute: 0, second: 0)) {
+            items.append(CollageItem(date: date, image: image(with: date)))
+        }
+        
+        return items
+    }
+    
+    func image(with date: Date) -> UIImage? {
+        UIImage(contentsOfFile: imagePath(with: date).path)
     }
     
     func imagePath(with date: Date) -> URL {
@@ -95,23 +104,5 @@ extension Challenge {
     
     func isComplete(with date: Date) -> Bool {
         FileManager().fileExists(atPath: imagePath(with: date).path)
-    }
-    
-    func images() -> [UIImage] {
-        var images: [UIImage] = []
-        let fileManager = FileManager()
-
-        do {
-            for path in try fileManager.contentsOfDirectory(atPath: baseDirectory.path).sorted() {
-                if path.hasPrefix(id.uuidString),
-                   let image = UIImage(contentsOfFile: baseDirectory.appendingPathComponent(path, isDirectory: false).path) {
-                    images.append(image)
-                }
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-        return images
     }
 }

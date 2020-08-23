@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct MCOmakeDetailView: View {
+    @State var isPresented = false
+    
     let achievement: Achievement
     private let maximumSize = UIScreen.main.fixedCoordinateSpace.bounds.size
     
@@ -18,10 +20,21 @@ struct MCOmakeDetailView: View {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: maximumSize.width)
+                    .padding()
             }
         })
         .navigationTitle(achievement.name)
+        .navigationBarItems(trailing: Button(action: {
+            self.isPresented.toggle()
+        }, label: {
+            Image(systemName: "square.and.arrow.up")
+                .imageScale(.large)
+        }))
+        .sheet(isPresented: $isPresented, content: {
+            if let image = achievement.image {
+                ActivityViewController(activityItems: [image])
+            }
+        })
     }
 }
 
