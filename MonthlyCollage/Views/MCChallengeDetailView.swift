@@ -12,7 +12,7 @@ struct MCChallengeDetailView: View {
     @State private var showsActionSheet = false
     @Environment(\.presentationMode) var presentationMode
 
-    let challenge: Challenge
+    let challenge: ChallengeModel
     
     var body: some View {
         ScrollView(content: {
@@ -27,14 +27,10 @@ struct MCChallengeDetailView: View {
                 MCCalendarView(challenge: challenge)
                 
                 Button(action: {
-                    if let image = CollageMaker.collage(with: challenge.collageItems, itemSize: CGSize(width: 200, height: 200)) {
-                        let achievement = Achievement.create(from: challenge)
-                        
-                        if let url = achievement.imageURL {
-                            _ = image.save(in: url)
-                        }
-                    
+                    if let _ = challenge.complete()?.collageImage {
                         self.presentationMode.wrappedValue.dismiss()
+                    } else {
+                        print("smt wrong")
                     }
                 }, label: {
                     Text("Export Collage")
@@ -42,7 +38,7 @@ struct MCChallengeDetailView: View {
             })
             .padding()
         })
-        .navigationBarTitle(Text(challenge.name))
+        .navigationBarTitle(Text(challenge.title))
         .navigationBarItems(trailing: moreButton)
     }
     
@@ -66,8 +62,8 @@ struct MCChallengeDetailView: View {
 struct MCChallengeDetailView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            MCChallengeDetailView(challenge: Challenge.preview())
-            MCChallengeDetailView(challenge: Challenge.preview())
+            MCChallengeDetailView(challenge: ChallengeModel.preview)
+            MCChallengeDetailView(challenge: ChallengeModel.preview)
                 .preferredColorScheme(.dark)
         }
     }

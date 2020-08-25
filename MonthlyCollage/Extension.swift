@@ -17,11 +17,14 @@ extension Date {
     var month: Int {
         Calendar.current.component(.month, from: self)
     }
+    var day: Int {
+        Calendar.current.component(.day, from: self)
+    }
     var headerTitle: String {
         "\(year). \(String(format: "%02d", month))"
     }
     var postfix: String {
-        "\(year)_\(String(format: "%02d", month))_\(Calendar.current.component(.day, from: self))"
+        "\(year)_\(String(format: "%02d", month))_\(String(format: "%02d", day))"
     }
     var monthFirst: Date {
         Calendar.current.dateInterval(of: .month, for: self)?.start ?? self

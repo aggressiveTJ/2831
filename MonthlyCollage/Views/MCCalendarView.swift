@@ -8,13 +8,56 @@
 
 import SwiftUI
 
+struct Day: Equatable, Hashable {
+    let date: Date
+    var uiImage: UIImage?
+    
+    init(date: Date, uiImage: UIImage? = nil) {
+        self.date = date
+        self.uiImage = uiImage
+    }
+    
+    var image: Image? {
+        guard let uiImage = uiImage else {
+            return nil
+        }
+        
+        return Image(uiImage: uiImage)
+            .resizable()
+    }
+}
+
 struct MCCalendarView: View {
     @Environment(\.calendar) var calendar
+    @State var days: [Day]
     
     private let gridItemLayout = Array(repeating: GridItem(.flexible(minimum: 10, maximum: (UIScreen.main.fixedCoordinateSpace.bounds.width / 8))), count: 7)
 
     
-    let challenge: Challenge
+    let challenge: ChallengeModel
+    
+    init(challenge: ChallengeModel) {
+        self.challenge = challenge
+        
+        guard let interval = Calendar.current.dateInterval(of: .month, for: challenge.startDate) else {
+            _days = State(initialValue: [])
+            return
+        }
+        
+        var days: [Day] = [Day(date: interval.start, uiImage: challenge.image(with: interval.start))]
+        Calendar.current.enumerateDates(startingAfter: interval.start, matching: DateComponents(hour: 0, minute: 0, second: 0), matchingPolicy: .nextTime, using: { (date, _, stop) in
+            if let date = date {
+                if date < interval.end {
+                    days.append(Day(date: date, uiImage: challenge.image(with: date)))
+                } else {
+                    stop = true
+                }
+            }
+        })
+        
+        print(days)
+        _days = State(initialValue: days)
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5, content: {
@@ -27,7 +70,7 @@ struct MCCalendarView: View {
     
     private var headerView: some View {
         VStack(alignment: .center, spacing: 5, content: {
-            Text(challenge.date.headerTitle)
+            Text(challenge.startDate.headerTitle)
                 .font(.largeTitle)
                 .fontWeight(.ultraLight)
                 .padding(.bottom)
@@ -48,16 +91,8 @@ struct MCCalendarView: View {
     }
     
     private var calendarView: some View {
-        let days: [Date] = {
-            guard let monthInterval = calendar.dateInterval(of: .month, for: challenge.date) else {
-                return []
-            }
-            
-            return calendar.generateDates(inside: monthInterval, matching: DateComponents(hour: 0, minute: 0, second: 0))
-        }()
-        
         var numberOfBlanks: Int {
-            calendar.component(.weekday, from: days[0]) - 1
+            calendar.component(.weekday, from: days[0].date) - 1
         }
         
         return LazyVGrid(columns: gridItemLayout, content: {
@@ -67,7 +102,7 @@ struct MCCalendarView: View {
             })
             
             ForEach(days, id: \.self, content: { (day) in
-                DayView(challenge: challenge, date: day)
+                DayView(days: $days, day: day)
             })
         })
     }
@@ -76,29 +111,18 @@ struct MCCalendarView: View {
 private struct DayView: View {
     @Environment(\.calendar) var calendar
     @State var showingImagePicker = false
+    @Binding var days: [Day]
     
-    let challenge: Challenge
+    let day: Day
     
-    private let date: Date
-    private var image: Image?
     private var isAvailable: Bool {
-        date <= Date()
-    }
-    
-    init(challenge: Challenge, date: Date = Date()) {
-        self.challenge = challenge
-        self.date = date
-        
-        if let uiImage = challenge.image(with: date) {
-            self.image = Image(uiImage: uiImage)
-        }
+        day.date <= Date()
     }
     
     var body: some View {
         ZStack(content: {
             if isAvailable {
-                image?
-                    .resizable()
+                day.image?
                     .aspectRatio(contentMode: .fill)
                     .opacity(0.8)
                     .layoutPriority(-1)
@@ -106,9 +130,9 @@ private struct DayView: View {
                 Button(action: {
                     self.showingImagePicker = true
                 }, label: {
-                    if challenge.isComplete(with: date) {
+                    if day.image != nil {
                         VStack(content: {
-                            Text(String(calendar.component(.day, from: date)))
+                            Text(String(calendar.component(.day, from: day.date)))
                                 .font(.body)
                                 .fontWeight(.bold)
                                 .frame(maxWidth: .infinity)
@@ -120,7 +144,7 @@ private struct DayView: View {
                         })
                     } else {
                         VStack(alignment: .leading, content: {
-                            Text(String(calendar.component(.day, from: date)))
+                            Text(String(calendar.component(.day, from: day.date)))
                                 .font(.body)
                                 .fontWeight(.thin)
                                 .frame(maxWidth: .infinity)
@@ -133,7 +157,7 @@ private struct DayView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .buttonStyle(PlainButtonStyle())
             } else {
-                Text(String(calendar.component(.day, from: date)))
+                Text(String(calendar.component(.day, from: day.date)))
                     .font(.body)
                     .fontWeight(.ultraLight)
                     .frame(maxWidth: .infinity)
@@ -146,7 +170,12 @@ private struct DayView: View {
         .sheet(isPresented: $showingImagePicker, content: {
             if isAvailable {
                 ImagePicker(sourceType: .savedPhotosAlbum, onImagePicked: { (image) in
-                    _ = image.save(in: challenge.imagePath(with: date))
+//                    _ = image.save(in: challenge.imagePath(with: date))
+                    guard let index = days.firstIndex(of: day) else {
+                        return
+                    }
+                    
+                    days[index] = Day(date: day.date, uiImage: image)
                 })
             }
         })
@@ -155,6 +184,6 @@ private struct DayView: View {
 
 struct MCCalendarView_Previews: PreviewProvider {
     static var previews: some View {
-        MCCalendarView(challenge: Challenge.preview())
+        MCCalendarView(challenge: ChallengeModel.preview)
     }
 }

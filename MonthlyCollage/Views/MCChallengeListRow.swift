@@ -9,11 +9,11 @@
 import SwiftUI
 
 struct MCChallengeListRow: View {
-    let challenge: Challenge
+    let challenge: ChallengeModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10, content: {
-            Text(challenge.name)
+            Text(challenge.title)
                 .font(.title2)
                 .fontWeight(.bold)
                 .lineLimit(1)
@@ -31,7 +31,7 @@ struct MCChallengeListRow: View {
 
 struct MCChallengeListRow_Previews: PreviewProvider {
     static var previews: some View {
-        MCChallengeListRow(challenge: Challenge.preview())
+        MCChallengeListRow(challenge: ChallengeModel.preview)
             .previewLayout(.fixed(width: 375, height: 65))
     }
 }

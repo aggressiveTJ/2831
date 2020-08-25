@@ -7,16 +7,15 @@
 //
 
 import SwiftUI
-import CoreData
 
 struct MCChallengeListView: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @State private var dataSource = ChallengeDataSource<Challenge>()
+    @State private var dataSource = ChallengeManager.shared.challenges
     @State var isPresented = false
     
-    private var months: [String: [Challenge]] {
-        Dictionary(grouping: dataSource.objects) { $0.date.headerTitle }
+    private var months: [String: [ChallengeModel]] {
+        Dictionary(grouping: dataSource) { $0.startDate.headerTitle }
     }
     
     var body: some View {
@@ -51,8 +50,8 @@ struct MCChallengeListView: View {
     
     func removeChallenge(at offsets: IndexSet) {
         offsets.forEach { (index) in
-            let challenge = dataSource.objects[index]
-            challenge.delete()
+            let challenge = dataSource[index]
+            challenge.remove()
         }
     }
 }

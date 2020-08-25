@@ -12,17 +12,17 @@ struct MCAddChallengeView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State var id: UUID
-    @State var name: String
-    @State var date: Date
+    @State var title: String
+    @State var startDate: Date
     
-    var challenge: Challenge?
+    var challenge: ChallengeModel?
     
-    init(_ challenge: Challenge? = nil) {
+    init(_ challenge: ChallengeModel? = nil) {
         self.challenge = challenge
         
         _id = State(initialValue: challenge?.id ?? UUID())
-        _name = State(initialValue: challenge?.name ?? "")
-        _date = State(initialValue: challenge?.date ?? Date())
+        _title = State(initialValue: challenge?.title ?? "")
+        _startDate = State(initialValue: challenge?.startDate ?? Date())
     }
     
     var body: some View {
@@ -35,11 +35,11 @@ struct MCAddChallengeView: View {
                     .foregroundColor(.gray)
                 
                 Section(header: Text("Title"), content: {
-                    TextField("Title", text: $name)
+                    TextField("Title", text: $title)
                 })
                 
                 Section(header: Text("Start Date"), content: {
-                    DatePicker(selection: $date, displayedComponents: .date, label: {
+                    DatePicker(selection: $startDate, displayedComponents: .date, label: {
                         EmptyView()
                     })
                 })
@@ -54,22 +54,21 @@ struct MCAddChallengeView: View {
     private func addAction() {
         presentationMode.wrappedValue.dismiss()
         
-        guard !name.isEmpty else {
+        guard !title.isEmpty else {
             return
         }
-        
-        if challenge != nil {
-            challenge?.update(name: name)
-            challenge?.update(date: date)
+
+        if let editedChallenge = challenge {
+            editedChallenge.modify()
         } else {
-            _ = Challenge.createChallenge(name: name, id: id, date: date)
+            ChallengeModel(title: title, startDate: startDate).register()
         }
     }
 }
 
 struct MCAddChallengeView_Previews: PreviewProvider {
     static var previews: some View {
-        MCAddChallengeView(Challenge.preview())
+        MCAddChallengeView(ChallengeModel.preview)
     }
 }
 
