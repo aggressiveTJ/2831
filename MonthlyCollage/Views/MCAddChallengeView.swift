@@ -10,14 +10,17 @@ import SwiftUI
 
 struct MCAddChallengeView: View {
     @Environment(\.presentationMode) var presentationMode
+    @Binding var challenges: [Challenge]
     
     @State var id: UUID
     @State var title: String
     @State var startDate: Date
     
-    var challenge: ChallengeModel?
+    var challenge: Challenge?
     
-    init(_ challenge: ChallengeModel? = nil) {
+    init(challenges: Binding<[Challenge]>, challenge: Challenge? = nil) {
+        _challenges = challenges
+        
         self.challenge = challenge
         
         _id = State(initialValue: challenge?.id ?? UUID())
@@ -61,14 +64,14 @@ struct MCAddChallengeView: View {
         if let editedChallenge = challenge {
             editedChallenge.modify()
         } else {
-            ChallengeModel(title: title, startDate: startDate).register()
+            Challenge(title: title, startDate: startDate).register()
         }
     }
 }
 
 struct MCAddChallengeView_Previews: PreviewProvider {
     static var previews: some View {
-        MCAddChallengeView(ChallengeModel.preview)
+        MCAddChallengeView(challenges: .constant([]), challenge: Challenge.preview)
     }
 }
 

@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct MCMainTabView: View {
+    @EnvironmentObject var manager: DataManager
     @State private var selectedTabIndex: Int = 0
     
     var body: some View {
@@ -33,5 +34,6 @@ struct MCMainTabView: View {
 struct MCMainTabView_Previews: PreviewProvider {
     static var previews: some View {
         MCMainTabView()
+            .environmentObject(DataManager.shared)
     }
 }

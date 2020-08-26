@@ -9,11 +9,11 @@
 import SwiftUI
 
 struct MCOmakeListView: View {
-    @State private var dataSource = AchievementDataSource<Achievement>()
+    @EnvironmentObject var manager: DataManager
     @State var isPresented = false
     
     private var months: [String: [Achievement]] {
-        Dictionary(grouping: dataSource.objects) { $0.date.headerTitle }
+        Dictionary(grouping: manager.achievements) { $0.startDate.headerTitle }
     }
     
     var body: some View {
@@ -26,7 +26,7 @@ struct MCOmakeListView: View {
                             content: {
                                 ForEach(months[keys[key]] ?? [], content: { (achievement) in
                                     NavigationLink(destination: MCOmakeDetailView(achievement: achievement), label: {
-                                        Text(achievement.name)
+                                        Text(achievement.title)
                                     })
                                 })
                                 .onDelete(perform: removeAchievement)
@@ -38,15 +38,12 @@ struct MCOmakeListView: View {
     }
     
     func removeAchievement(at offsets: IndexSet) {
-        offsets.forEach { (index) in
-            let achievement = dataSource.objects[index]
-            achievement.delete()
-        }
     }
 }
 
 struct MCOmakeListView_Previews: PreviewProvider {
     static var previews: some View {
         MCOmakeListView()
+            .environmentObject(DataManager.shared)
     }
 }

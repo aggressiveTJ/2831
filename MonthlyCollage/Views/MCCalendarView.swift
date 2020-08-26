@@ -34,9 +34,9 @@ struct MCCalendarView: View {
     private let gridItemLayout = Array(repeating: GridItem(.flexible(minimum: 10, maximum: (UIScreen.main.fixedCoordinateSpace.bounds.width / 8))), count: 7)
 
     
-    let challenge: ChallengeModel
+    let challenge: Challenge
     
-    init(challenge: ChallengeModel) {
+    init(challenge: Challenge) {
         self.challenge = challenge
         
         guard let interval = Calendar.current.dateInterval(of: .month, for: challenge.startDate) else {
@@ -184,6 +184,6 @@ private struct DayView: View {
 
 struct MCCalendarView_Previews: PreviewProvider {
     static var previews: some View {
-        MCCalendarView(challenge: ChallengeModel.preview)
+        MCCalendarView(challenge: Challenge.preview)
     }
 }

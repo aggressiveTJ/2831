@@ -9,13 +9,13 @@
 import SwiftUI
 
 struct MCChallengeListView: View {
+    @EnvironmentObject var manager: DataManager
     @Environment(\.presentationMode) var presentationMode
     
-    @State private var dataSource = ChallengeManager.shared.challenges
     @State var isPresented = false
     
-    private var months: [String: [ChallengeModel]] {
-        Dictionary(grouping: dataSource) { $0.startDate.headerTitle }
+    private var months: [String: [Challenge]] {
+        Dictionary(grouping: manager.challenges) { $0.startDate.headerTitle }
     }
     
     var body: some View {
@@ -43,14 +43,14 @@ struct MCChallengeListView: View {
                     .imageScale(.large)
             }))
             .sheet(isPresented: $isPresented, content: {
-                MCAddChallengeView()
+                MCAddChallengeView(challenges: $manager.challenges)
             })
         })
     }
     
     func removeChallenge(at offsets: IndexSet) {
         offsets.forEach { (index) in
-            let challenge = dataSource[index]
+            let challenge = manager.challenges[index]
             challenge.remove()
         }
     }
@@ -59,5 +59,6 @@ struct MCChallengeListView: View {
 struct MCChallengeListView_Previews: PreviewProvider {
     static var previews: some View {
         MCChallengeListView()
+            .environmentObject(DataManager.shared)
     }
 }

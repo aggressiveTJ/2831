@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct MCChallengeListRow: View {
-    let challenge: ChallengeModel
+    let challenge: Challenge
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10, content: {
@@ -31,7 +31,7 @@ struct MCChallengeListRow: View {
 
 struct MCChallengeListRow_Previews: PreviewProvider {
     static var previews: some View {
-        MCChallengeListRow(challenge: ChallengeModel.preview)
+        MCChallengeListRow(challenge: Challenge.preview)
             .previewLayout(.fixed(width: 375, height: 65))
     }
 }

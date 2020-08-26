@@ -12,7 +12,7 @@ struct MCChallengeDetailView: View {
     @State private var showsActionSheet = false
     @Environment(\.presentationMode) var presentationMode
 
-    let challenge: ChallengeModel
+    let challenge: Challenge
     
     var body: some View {
         ScrollView(content: {
@@ -62,8 +62,8 @@ struct MCChallengeDetailView: View {
 struct MCChallengeDetailView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            MCChallengeDetailView(challenge: ChallengeModel.preview)
-            MCChallengeDetailView(challenge: ChallengeModel.preview)
+            MCChallengeDetailView(challenge: Challenge.preview)
+            MCChallengeDetailView(challenge: Challenge.preview)
                 .preferredColorScheme(.dark)
         }
     }

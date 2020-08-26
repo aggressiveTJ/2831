@@ -16,14 +16,20 @@ struct MCOmakeDetailView: View {
     
     var body: some View {
         ScrollView(content: {
-            if let image = achievement.image {
+            if let image = achievement.collageImage {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .padding()
+            } else {
+                Image(systemName: "questionmark.square")
+                    .resizable()
+                    .opacity(0.3)
+                    .aspectRatio(contentMode: .fit)
+                    .padding(100)
             }
         })
-        .navigationTitle(achievement.name)
+        .navigationTitle(achievement.title)
         .navigationBarItems(trailing: Button(action: {
             self.isPresented.toggle()
         }, label: {
@@ -31,7 +37,7 @@ struct MCOmakeDetailView: View {
                 .imageScale(.large)
         }))
         .sheet(isPresented: $isPresented, content: {
-            if let image = achievement.image {
+            if let image = achievement.collageImage {
                 ActivityViewController(activityItems: [image])
             }
         })
@@ -40,6 +46,6 @@ struct MCOmakeDetailView: View {
 
 struct MCOmakeDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MCOmakeDetailView(achievement: Achievement.preview())
+        MCOmakeDetailView(achievement: Achievement.preview)
     }
 }
