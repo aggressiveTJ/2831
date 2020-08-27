@@ -15,11 +15,12 @@ struct MCChallengeListView: View {
     @State var isPresented = false
     
     private var months: [String: [Challenge]] {
-        Dictionary(grouping: manager.challenges) { $0.startDate.headerTitle }
+        let grouping = Dictionary(grouping: manager.challenges, by: { $0.startDate.headerTitle }).sorted(by: { $0.key > $1.key })
+        return [String: [Challenge]](grouping, uniquingKeysWith: +)
     }
     
     var body: some View {
-        let keys = months.map { $0.key }
+        let keys = months.map({ $0.key })
         
         return NavigationView(content: {
             List(content: {
@@ -31,7 +32,7 @@ struct MCChallengeListView: View {
                                         MCChallengeListRow(challenge: challenge)
                                     })
                                 })
-                                    .onDelete(perform: removeChallenge)
+                                .onDelete(perform: { $0.forEach { manager.challenges.remove(at: $0) }})
                             })
                 })
             })
@@ -46,13 +47,6 @@ struct MCChallengeListView: View {
                 MCAddChallengeView(challenges: $manager.challenges)
             })
         })
-    }
-    
-    func removeChallenge(at offsets: IndexSet) {
-        offsets.forEach { (index) in
-            let challenge = manager.challenges[index]
-            challenge.remove()
-        }
     }
 }
 

@@ -9,8 +9,11 @@
 import SwiftUI
 
 struct MCChallengeDetailView: View {
-    @State private var showsActionSheet = false
+    @EnvironmentObject var manager: DataManager
     @Environment(\.presentationMode) var presentationMode
+    
+    @State private var showsActionSheet = false
+    @State private var showsEditView = false
 
     let challenge: Challenge
     
@@ -30,7 +33,7 @@ struct MCChallengeDetailView: View {
                     if let _ = challenge.complete()?.collageImage {
                         self.presentationMode.wrappedValue.dismiss()
                     } else {
-                        print("smt wrong")
+                        print("[MCChallengeDetailView.body] smt wrong")
                     }
                 }, label: {
                     Text("Export Collage")
@@ -40,6 +43,9 @@ struct MCChallengeDetailView: View {
         })
         .navigationBarTitle(Text(challenge.title))
         .navigationBarItems(trailing: moreButton)
+        .sheet(isPresented: $showsEditView, content: {
+            MCAddChallengeView(challenges: $manager.challenges, challenge: challenge)
+        })
     }
     
     private var moreButton: some View {
@@ -47,12 +53,17 @@ struct MCChallengeDetailView: View {
             self.showsActionSheet = true
         }, label: {
             Image(systemName: "ellipsis.circle")
-                .imageScale(/*@START_MENU_TOKEN@*/.large/*@END_MENU_TOKEN@*/)
+                .imageScale(.large)
         })
         .actionSheet(isPresented: $showsActionSheet, content: {
             ActionSheet(title: Text(""), buttons: [
-                .default(Text("Edit"), action: {}),
-                .destructive(Text("Remove"), action: {}),
+                .default(Text("Edit"), action: {
+                    self.showsEditView.toggle()
+                }),
+                .default(Text("Remove"), action: {
+                    self.challenge.remove()
+                    self.presentationMode.wrappedValue.dismiss()
+                }),
                 .cancel()
             ])
         })

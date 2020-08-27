@@ -54,8 +54,7 @@ struct MCCalendarView: View {
                 }
             }
         })
-        
-        print(days)
+
         _days = State(initialValue: days)
     }
     

@@ -10,14 +10,15 @@ import SwiftUI
 
 struct MCOmakeListView: View {
     @EnvironmentObject var manager: DataManager
-    @State var isPresented = false
+    @State private var groupedByDate = true
     
     private var months: [String: [Achievement]] {
-        Dictionary(grouping: manager.achievements) { $0.startDate.headerTitle }
+        let grouping = Dictionary(grouping: manager.achievements, by: { groupedByDate ? $0.startDate.headerTitle : $0.title }).sorted(by: { $0.key > $1.key })
+        return [String: [Achievement]](grouping, uniquingKeysWith: +)
     }
     
     var body: some View {
-        let keys = months.map { $0.key }
+        let keys = months.map({ $0.key })
         
         return NavigationView(content: {
             List(content: {
@@ -26,18 +27,32 @@ struct MCOmakeListView: View {
                             content: {
                                 ForEach(months[keys[key]] ?? [], content: { (achievement) in
                                     NavigationLink(destination: MCOmakeDetailView(achievement: achievement), label: {
-                                        Text(achievement.title)
+                                        VStack(content: {
+                                            Text(achievement.title)
+                                        })
                                     })
                                 })
-                                .onDelete(perform: removeAchievement)
+                                .onDelete(perform: { $0.forEach { manager.achievements.remove(at: $0) }})
                             })
                 })
             })
             .navigationBarTitle(Text("Achievement"))
+            .navigationBarItems(trailing: sortButton)
         })
     }
-    
-    func removeAchievement(at offsets: IndexSet) {
+
+    private var sortButton: some View {
+        Button(action: {
+            self.groupedByDate.toggle()
+        }, label: {
+            if groupedByDate {
+                Image(systemName: "calendar.circle")
+                    .imageScale(.large)
+            } else {
+                Image(systemName: "a.circle")
+                    .imageScale(.large)
+            }
+        })
     }
 }
 

@@ -15,7 +15,8 @@ final class DataManager: ObservableObject {
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("2831", isDirectory: true)
     }
     
-    private init() { }
+    private init() {
+    }
     
     private var _challenges: [Challenge] = [] {
         didSet {
@@ -73,7 +74,7 @@ final class DataManager: ObservableObject {
         
         do {
             _challenges = try JSONDecoder().decode([Challenge].self, from: try Data(contentsOf: documentDirectory.appendingPathComponent(Challenge.fileName)))
-            achievements = try JSONDecoder().decode([Achievement].self, from: try Data(contentsOf: documentDirectory.appendingPathComponent(Achievement.fileName)))
+            _achievements = try JSONDecoder().decode([Achievement].self, from: try Data(contentsOf: documentDirectory.appendingPathComponent(Achievement.fileName)))
         } catch {
             print("[ChallengeManager.load] \(error.localizedDescription)")
         }

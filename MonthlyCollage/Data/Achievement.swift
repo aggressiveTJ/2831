@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 struct Achievement: Identifiable, Equatable, Codable {
-    static var fileName = "2831_challenge.dat"
+    static var fileName = "2831_achievement.dat"
     static let preview = Achievement(challenge: Challenge.preview)
     
     let id: UUID

@@ -8,7 +8,6 @@
 
 import UIKit
 import SwiftUI
-import CoreData
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -23,6 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.rootViewController = UIHostingController(rootView: MCMainTabView().environmentObject(DataManager.shared))
             self.window = window
             window.makeKeyAndVisible()
+            
+            self.window?.tintColor = UIColor(named: "AccentColor")
         }
     }
     

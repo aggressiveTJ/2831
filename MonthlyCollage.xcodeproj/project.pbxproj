@@ -76,6 +76,27 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		A828605724F6BA270033C9D2 /* Challenge */ = {
+			isa = PBXGroup;
+			children = (
+				A8FC7AFA24DE64EF007FC7B2 /* MCAddChallengeView.swift */,
+				A8DDCB1624DDB4B200610578 /* MCCalendarView.swift */,
+				A8FC7B0524DE7887007FC7B2 /* MCChallengeDetailView.swift */,
+				A842729924DF0B5700EAD1A7 /* MCChallengeListRow.swift */,
+				A8FC7AFC24DE6CF2007FC7B2 /* MCChallengeListView.swift */,
+			);
+			path = Challenge;
+			sourceTree = "<group>";
+		};
+		A828605824F6BA340033C9D2 /* Achievement */ = {
+			isa = PBXGroup;
+			children = (
+				A89521E724F183C400E1003A /* MCOmakeDetailView.swift */,
+				A89521E324F17FC800E1003A /* MCOmakeListView.swift */,
+			);
+			path = Achievement;
+			sourceTree = "<group>";
+		};
 		A86E248624F28FCF006243E6 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -127,14 +148,9 @@
 		A8FC7AFE24DE6CF8007FC7B2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A8FC7AFA24DE64EF007FC7B2 /* MCAddChallengeView.swift */,
-				A8DDCB1624DDB4B200610578 /* MCCalendarView.swift */,
-				A8FC7B0524DE7887007FC7B2 /* MCChallengeDetailView.swift */,
-				A842729924DF0B5700EAD1A7 /* MCChallengeListRow.swift */,
-				A8FC7AFC24DE6CF2007FC7B2 /* MCChallengeListView.swift */,
+				A828605824F6BA340033C9D2 /* Achievement */,
+				A828605724F6BA270033C9D2 /* Challenge */,
 				6878882C24E228780075B93A /* MCMainTabView.swift */,
-				A89521E724F183C400E1003A /* MCOmakeDetailView.swift */,
-				A89521E324F17FC800E1003A /* MCOmakeListView.swift */,
 				A86E248624F28FCF006243E6 /* UIKit */,
 			);
 			path = Views;
