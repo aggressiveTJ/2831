@@ -76,11 +76,19 @@ struct Challenge: Identifiable, Equatable, Codable {
         return true
     }
     
-    func image(with targetDate: Date) -> UIImage? {
+    func imagePath(with targetDate: Date) -> String? {
         guard let baseDirectory = baseDirectory else {
             return nil
         }
         
-        return UIImage(contentsOfFile: baseDirectory.appendingPathComponent("\(targetDate.postfix).jpg").path)
+        return baseDirectory.appendingPathComponent("\(targetDate.fileName).jpg").path
+    }
+
+    func image(with targetDate: Date) -> UIImage? {
+        guard let path = imagePath(with: targetDate) else {
+            return nil
+        }
+        
+        return UIImage(contentsOfFile: path)
     }
 }

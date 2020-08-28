@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CoreData
 import SwiftUI
 
 extension Date {
@@ -20,18 +19,23 @@ extension Date {
     var day: Int {
         Calendar.current.component(.day, from: self)
     }
-    var headerTitle: String {
-        "\(year). \(String(format: "%02d", month))"
-    }
-    var postfix: String {
-        "\(year)_\(String(format: "%02d", month))_\(String(format: "%02d", day))"
-    }
     var monthFirst: Date {
         Calendar.current.dateInterval(of: .month, for: self)?.start ?? self
     }
     
-    func isInSameMonth(with another: Date) -> Bool {
-        postfix == another.postfix
+    var headerTitle: String {
+        String(format: "%d. %02d", year, month)
+    }
+    var fileName: String {
+        String(format: "%d_%02d_%02d", year, month, day)
+    }
+    var exifDateString: String {
+        let calendar = Calendar.current
+        return String(format: "%d. %02d. %02d. %@", year, month, day, calendar.shortWeekdaySymbols[calendar.component(.weekday, from: self) - 1])
+    }
+    var exifTimeString: String {
+        let calendar = Calendar.current
+        return String(format: "%02d:%02d:%02d", calendar.component(.hour, from: self), calendar.component(.minute, from: self), calendar.component(.second, from: self))
     }
 }
 
@@ -54,7 +58,7 @@ extension Calendar {
 }
 
 extension UIImage {
-    func save(in path: URL) -> Bool {
+    @discardableResult func save(in path: URL) -> Bool {
         guard let data = jpegData(compressionQuality: 0.8) else {
             print("[ERROR] no data")
             return false

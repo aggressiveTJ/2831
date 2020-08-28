@@ -14,7 +14,7 @@ struct CollageItem {
     let image: UIImage?
 }
 
-enum CollageMaker {
+enum ImageGenerator {
     static func collage(with items: [CollageItem], itemSize: CGSize) -> UIImage? {
         guard !items.isEmpty else {
             print("empty items")

@@ -11,7 +11,8 @@
 		A821DC1A24F548E20091E49A /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A821DC1924F548E20091E49A /* DataManager.swift */; };
 		A828605424F6A7460033C9D2 /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A828605324F6A7460033C9D2 /* Challenge.swift */; };
 		A828605624F6A77A0033C9D2 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A828605524F6A77A0033C9D2 /* Achievement.swift */; };
-		A83305D224F2915800A3DA98 /* CollageMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83305D124F2915800A3DA98 /* CollageMaker.swift */; };
+		A82CFB0E24F95E8600513425 /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82CFB0D24F95E8600513425 /* Day.swift */; };
+		A83305D224F2915800A3DA98 /* ImageGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83305D124F2915800A3DA98 /* ImageGenerator.swift */; };
 		A842729A24DF0B5700EAD1A7 /* MCChallengeListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842729924DF0B5700EAD1A7 /* MCChallengeListRow.swift */; };
 		A842729D24DF0E3A00EAD1A7 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842729C24DF0E3A00EAD1A7 /* Extension.swift */; };
 		A86E248524F28FCA006243E6 /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86E248424F28FCA006243E6 /* ActivityViewController.swift */; };
@@ -34,7 +35,8 @@
 		A821DC1924F548E20091E49A /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		A828605324F6A7460033C9D2 /* Challenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenge.swift; sourceTree = "<group>"; };
 		A828605524F6A77A0033C9D2 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
-		A83305D124F2915800A3DA98 /* CollageMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollageMaker.swift; sourceTree = "<group>"; };
+		A82CFB0D24F95E8600513425 /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
+		A83305D124F2915800A3DA98 /* ImageGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGenerator.swift; sourceTree = "<group>"; };
 		A842729924DF0B5700EAD1A7 /* MCChallengeListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCChallengeListRow.swift; sourceTree = "<group>"; };
 		A842729C24DF0E3A00EAD1A7 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		A86E248424F28FCA006243E6 /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
@@ -70,8 +72,9 @@
 			children = (
 				A828605524F6A77A0033C9D2 /* Achievement.swift */,
 				A828605324F6A7460033C9D2 /* Challenge.swift */,
-				A83305D124F2915800A3DA98 /* CollageMaker.swift */,
 				A821DC1924F548E20091E49A /* DataManager.swift */,
+				A82CFB0D24F95E8600513425 /* Day.swift */,
+				A83305D124F2915800A3DA98 /* ImageGenerator.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -246,10 +249,11 @@
 				A842729A24DF0B5700EAD1A7 /* MCChallengeListRow.swift in Sources */,
 				A8DDCB0524DDAC2900610578 /* SceneDelegate.swift in Sources */,
 				A821DC1A24F548E20091E49A /* DataManager.swift in Sources */,
-				A83305D224F2915800A3DA98 /* CollageMaker.swift in Sources */,
+				A83305D224F2915800A3DA98 /* ImageGenerator.swift in Sources */,
 				A8FC7AFB24DE64EF007FC7B2 /* MCAddChallengeView.swift in Sources */,
 				A8FC7AFD24DE6CF2007FC7B2 /* MCChallengeListView.swift in Sources */,
 				A8FC7B0624DE7887007FC7B2 /* MCChallengeDetailView.swift in Sources */,
+				A82CFB0E24F95E8600513425 /* Day.swift in Sources */,
 				A828605424F6A7460033C9D2 /* Challenge.swift in Sources */,
 				A8745B5B24ECB89D00065587 /* ImagePicker.swift in Sources */,
 				6878882D24E228780075B93A /* MCMainTabView.swift in Sources */,

@@ -8,32 +8,12 @@
 
 import SwiftUI
 
-struct Day: Equatable, Hashable {
-    let date: Date
-    var uiImage: UIImage?
-    
-    init(date: Date, uiImage: UIImage? = nil) {
-        self.date = date
-        self.uiImage = uiImage
-    }
-    
-    var image: Image? {
-        guard let uiImage = uiImage else {
-            return nil
-        }
-        
-        return Image(uiImage: uiImage)
-            .resizable()
-    }
-}
-
 struct MCCalendarView: View {
     @Environment(\.calendar) var calendar
     @State var days: [Day]
     
     private let gridItemLayout = Array(repeating: GridItem(.flexible(minimum: 10, maximum: (UIScreen.main.fixedCoordinateSpace.bounds.width / 8))), count: 7)
 
-    
     let challenge: Challenge
     
     init(challenge: Challenge) {
@@ -101,17 +81,28 @@ struct MCCalendarView: View {
             })
             
             ForEach(days, id: \.self, content: { (day) in
-                DayView(days: $days, day: day)
+                DayView(days: $days, challenge: challenge, day: day)
             })
         })
     }
 }
 
 private struct DayView: View {
+    private enum SheetType: Identifiable {
+        case activityController
+        case imagePicker
+        
+        var id: Int {
+            self.hashValue
+        }
+    }
+    
     @Environment(\.calendar) var calendar
-    @State var showingImagePicker = false
+    @State private var showingModal: SheetType?
+    @State private var showingActionSheet = false
     @Binding var days: [Day]
     
+    let challenge: Challenge
     let day: Day
     
     private var isAvailable: Bool {
@@ -127,9 +118,13 @@ private struct DayView: View {
                     .layoutPriority(-1)
                 
                 Button(action: {
-                    self.showingImagePicker = true
+                    if let _ = day.uiImage {
+                        self.showingModal = .activityController
+                    } else {
+                        self.showingModal = .imagePicker
+                    }
                 }, label: {
-                    if day.image != nil {
+                    if let _ = day.image {
                         VStack(content: {
                             Text(String(calendar.component(.day, from: day.date)))
                                 .font(.body)
@@ -166,17 +161,33 @@ private struct DayView: View {
         })
         .clipShape(RoundedRectangle(cornerRadius: 3))
         .clipped()
-        .sheet(isPresented: $showingImagePicker, content: {
-            if isAvailable {
+        .sheet(item: $showingModal, content: { (item) in
+            switch item {
+            case .activityController:
+                ActivityViewController(activityItems: [day.sharableImage])
+            case .imagePicker:
                 ImagePicker(sourceType: .savedPhotosAlbum, onImagePicked: { (image) in
-//                    _ = image.save(in: challenge.imagePath(with: date))
-                    guard let index = days.firstIndex(of: day) else {
+                    guard let index = days.firstIndex(of: day),
+                          let imagePath = challenge.imagePath(with: day.date),
+                          let url = URL(string: imagePath) else {
                         return
                     }
                     
                     days[index] = Day(date: day.date, uiImage: image)
+                    image.save(in: url)
                 })
             }
+        })
+        .actionSheet(isPresented: $showingActionSheet, content: {
+            ActionSheet(title: Text(""), buttons: [
+                .default(Text("Share"), action: {
+                    self.showingModal = .activityController
+                }),
+                .default(Text("Remove"), action: {
+                    
+                }),
+                .cancel()
+            ])
         })
     }
 }
