@@ -40,12 +40,23 @@ extension Date {
         String(format: "%d-%02d-%02d", year, month, day)
     }
     var exifDateString: String {
-        let calendar = Calendar.current
-        return String(format: "%d. %02d. %02d. %@", year, month, day, calendar.shortWeekdaySymbols[calendar.component(.weekday, from: self) - 1])
+        DateFormatter.exifDateFormatter.string(from: self)
     }
     var exifTimeString: String {
-        let calendar = Calendar.current
-        return String(format: "%02d:%02d:%02d", calendar.component(.hour, from: self), calendar.component(.minute, from: self), calendar.component(.second, from: self))
+        DateFormatter.exifTimeFormatter.string(from: self)
+    }
+}
+
+extension DateFormatter {
+    static var exifTimeFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "hh:mm:ss a"
+        return formatter
+    }
+    static var exifDateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy. MM. dd.  EEE"
+        return formatter
     }
 }
 
@@ -68,8 +79,8 @@ extension Calendar {
 }
 
 extension UIImage {
-    @discardableResult func save(in path: URL) -> Bool {
-        guard let data = jpegData(compressionQuality: 0.8) else {
+    @discardableResult func save(in path: URL, original: Bool = true) -> Bool {
+        guard let data = cropAndResize(original: original)?.jpegData(compressionQuality: 1.0) else {
             print("[ERROR] no data")
             return false
         }
@@ -82,5 +93,26 @@ extension UIImage {
         }
         
         return true
+    }
+    
+    private func cropAndResize(original: Bool) -> UIImage? {
+        let maxLength: CGFloat = original ? 1000 : 300
+        let length = [size.width, size.height, maxLength].min() ?? maxLength
+        let imageView = UIImageView(frame: CGRect(origin: .zero, size: CGSize(width: length, height: length)))
+        
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = self
+        
+        defer {
+            UIGraphicsEndImageContext()
+        }
+        
+        UIGraphicsBeginImageContextWithOptions(imageView.bounds.size, false, scale)
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return nil
+        }
+        
+        imageView.layer.render(in: context)
+        return UIGraphicsGetImageFromCurrentImageContext()
     }
 }

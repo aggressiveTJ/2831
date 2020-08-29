@@ -31,11 +31,11 @@ struct Challenge: Identifiable, Equatable, Codable {
             return []
         }
         
-        var days: [Day] = [Day(date: interval.start, uiImage: image(with: interval.start))]
+        var days: [Day] = [Day(date: interval.start, uiImage: image(with: interval.start, original: false))]
         Calendar.current.enumerateDates(startingAfter: interval.start, matching: DateComponents(hour: 0, minute: 0, second: 0), matchingPolicy: .nextTime, using: { (date, _, stop) in
             if let date = date {
                 if date < interval.end {
-                    days.append(Day(date: date, uiImage: image(with: date)))
+                    days.append(Day(date: date, uiImage: image(with: date, original: false)))
                 } else {
                     stop = true
                 }
@@ -66,7 +66,7 @@ struct Challenge: Identifiable, Equatable, Codable {
     func complete() -> Achievement? {
         let achievement = Achievement(challenge: self)
         guard let path = achievement.imagePath,
-              let image = days.collage(itemSize: CGSize(width: 200, height: 200)),
+              let image = days.collage(itemSize: CGSize(width: 300, height: 300)),
               image.save(in: URL(fileURLWithPath: path)) else {
             return nil
         }
@@ -105,19 +105,40 @@ struct Challenge: Identifiable, Equatable, Codable {
         return true
     }
     
-    func imagePath(with targetDate: Date) -> String? {
+    func imagePath(with targetDate: Date, original: Bool = true) -> String? {
         guard let baseDirectory = baseDirectory else {
             return nil
         }
         
-        return baseDirectory.appendingPathComponent("\(targetDate.fileName).jpg").path
+        createBaseDirectoryIfNeeded()
+        
+        let fileName = original ? targetDate.fileName : "\(targetDate.fileName)_thumbnail"
+        return baseDirectory.appendingPathComponent("\(fileName).jpg").path
     }
 
-    func image(with targetDate: Date) -> UIImage? {
-        guard let path = imagePath(with: targetDate) else {
+    func image(with targetDate: Date, original: Bool = true) -> UIImage? {
+        guard let path = imagePath(with: targetDate, original: original) else {
             return nil
         }
         
+        createBaseDirectoryIfNeeded()
+        
         return UIImage(contentsOfFile: path)
+    }
+    
+    private func createBaseDirectoryIfNeeded() {
+        guard let baseDirectory = baseDirectory else {
+            return
+        }
+        
+        let fileManager = FileManager()
+        if !fileManager.fileExists(atPath: baseDirectory.path) {
+            do {
+                try fileManager.createDirectory(atPath: baseDirectory.path, withIntermediateDirectories: false, attributes: nil)
+            } catch {
+                print("[Challenge.createBaseDirectoryIfNeeded] \(error.localizedDescription)")
+                fatalError()
+            }
+        }
     }
 }

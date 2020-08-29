@@ -29,6 +29,15 @@ struct Day: Equatable, Hashable, Identifiable {
         return Image(uiImage: uiImage)
             .resizable()
     }
+    
+    func saveImage(with image: UIImage, in challenge: Challenge) -> Bool {
+        guard let originalPath = challenge.imagePath(with: date),
+              let thumbnailPath = challenge.imagePath(with: date, original: false) else {
+            return false
+        }
+        
+        return image.save(in: URL(fileURLWithPath: originalPath)) && image.save(in: URL(fileURLWithPath: thumbnailPath))
+    }
 }
 
 extension Day {
@@ -54,27 +63,37 @@ extension Day {
         }
         
         let imageRect = CGRect(origin: origin, size: image.size)
-        UIBezierPath(roundedRect: CGRect(origin: .zero, size: canvasSize), cornerRadius: length * 0.03).addClip()
         image.draw(in: imageRect)
         
         // MARK: - draw EXIF view
         let date = Date()
-        let factor = length * 0.1
-        let exifViewRect = CGRect(x: factor, y: factor, width: length - (factor * 2), height: length - (factor * 2))
-        let exifView = UIView(frame: exifViewRect)
+        let factor = length * 0.05
+        let exifView = UIView(frame: imageRect)
+
+        let gradient = CAGradientLayer()
+        gradient.frame = imageRect
+        gradient.colors = [
+            UIColor.init(white: 0, alpha: 0).cgColor,
+            UIColor.init(white: 0, alpha: 0).cgColor,
+            UIColor.init(white: 0, alpha: 0.8).cgColor,
+        ]
+        gradient.locations = [0.0, 0.7, 1.0]
+        exifView.layer.addSublayer(gradient)
         
-        let timeLabel = UILabel(frame: CGRect(x: 0, y: exifViewRect.height - (factor * 0.3), width: exifViewRect.width, height: factor * 0.3))
-        timeLabel.font = UIFont.systemFont(ofSize: factor * 0.2, weight: .ultraLight)
-        timeLabel.text = date.exifTimeString
-        timeLabel.textAlignment = .left
-        timeLabel.numberOfLines = 1
+        var y = canvasSize.height - (factor * 1.1)
+        let timeLabel = UILabel(frame: CGRect(x: factor, y: y - (factor * 1.2), width: canvasSize.width, height: (factor * 1.2)))
+        timeLabel.font = UIFont.systemFont(ofSize: (factor * 1.1), weight: .thin)
+        timeLabel.text = date.exifTimeString.lowercased()
+        timeLabel.textColor = .init(white: 1, alpha: 0.8)
+        setAppearance(timeLabel)
         exifView.addSubview(timeLabel)
         
-        let dateLabel = UILabel(frame: CGRect(x: 0, y: canvasSize.height - (factor * 0.3) - (factor * 0.5), width: exifViewRect.width, height: factor * 0.5))
-        dateLabel.font = UIFont.systemFont(ofSize: factor * 0.4, weight: .ultraLight)
+        y -= (factor * 1.35)
+        let dateLabel = UILabel(frame: CGRect(x: factor, y: y - (factor * 1.6), width: canvasSize.width, height: factor * 1.6))
+        dateLabel.font = UIFont.systemFont(ofSize: factor * 1.5, weight: .thin)
         dateLabel.text = date.exifDateString
-        dateLabel.textAlignment = .left
-        dateLabel.numberOfLines = 1
+        dateLabel.textColor = .init(white: 1, alpha: 0.9)
+        setAppearance(dateLabel)
         exifView.addSubview(dateLabel)
         
         if let context = UIGraphicsGetCurrentContext() {
@@ -82,6 +101,16 @@ extension Day {
         }
         
         return UIGraphicsGetImageFromCurrentImageContext()
+    }
+    
+    func setAppearance(_ label: UILabel) {
+        label.textAlignment = .left
+        label.numberOfLines = 1
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowRadius = 4.0
+        label.layer.shadowOpacity = 1.0
+        label.layer.shadowOffset = CGSize(width: 1, height: 1)
+        label.layer.masksToBounds = false
     }
 }
 

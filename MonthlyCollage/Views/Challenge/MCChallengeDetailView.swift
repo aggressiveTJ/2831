@@ -24,20 +24,6 @@ struct MCChallengeDetailView: View {
     
     @EnvironmentObject var manager: DataManager
     @State var selectedDay: Day? {
-        willSet {
-            guard let day = newValue else {
-                return
-            }
-
-            showsActionSheet = false
-            sheetType = nil
-
-            if let _ = day.uiImage {
-                sheetType = .activityView
-            } else {
-                sheetType = .imagePicker
-            }
-        }
         didSet {
             guard let day = selectedDay else {
                 return
@@ -100,6 +86,10 @@ struct MCChallengeDetailView: View {
                 ActivityViewController(activityItems: [selectedDay?.sharableImage])
             } else if type == .imagePicker {
                 ImagePicker(sourceType: .photoLibrary, onImagePicked: { (image) in
+                    if let day = self.selectedDay {
+                        day.saveImage(with: image, in: self.challenge)
+                    }
+                    
                     self.selectedDay?.uiImage = image
                 })
             }
