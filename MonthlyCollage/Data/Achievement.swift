@@ -23,11 +23,15 @@ struct Achievement: Identifiable, Equatable, Codable {
         self.startDate = challenge.startDate
     }
     
-    fileprivate var baseDirectory: URL? {
-        DataManager.documentDirectory?.appendingPathComponent("achievements", isDirectory: true)
+    var imagePath: String? {
+        guard let achievementDirectory = DataManager.achievementDirectory else {
+            return nil
+        }
+        
+        return achievementDirectory.appendingPathComponent("\(id).jpg").path
     }
     var collageImage: UIImage? {
-        guard let path = baseDirectory?.appendingPathComponent("\(id).jpg").path,
+        guard let path = imagePath,
             let image = UIImage(contentsOfFile: path) else {
                 return nil
         }
@@ -41,8 +45,8 @@ struct Achievement: Identifiable, Equatable, Codable {
         }
         
         do {
-            if let url = baseDirectory {
-                try FileManager().removeItem(at: url)
+            if let achievementDirectory = DataManager.achievementDirectory {
+                try FileManager().removeItem(at: achievementDirectory)
             }
         } catch {
             print("[AchievementModel.remove] \(error.localizedDescription)")

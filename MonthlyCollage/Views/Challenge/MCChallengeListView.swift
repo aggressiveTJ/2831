@@ -12,7 +12,7 @@ struct MCChallengeListView: View {
     @EnvironmentObject var manager: DataManager
     @Environment(\.presentationMode) var presentationMode
     
-    @State var isPresented = false
+    @State private var showsSheet = false
     
     private var months: [String: [Challenge]] {
         let grouping = Dictionary(grouping: manager.challenges, by: { $0.startDate.headerTitle }).sorted(by: { $0.key > $1.key })
@@ -28,7 +28,7 @@ struct MCChallengeListView: View {
                     Section(header: Text(keys[key]),
                             content: {
                                 ForEach(months[keys[key]] ?? [], content: { (challenge) in
-                                    NavigationLink(destination: MCChallengeDetailView(challenge: challenge), label: {
+                                    NavigationLink(destination: LazyView(MCChallengeDetailView(challenge: challenge)), label: {
                                         MCChallengeListRow(challenge: challenge)
                                     })
                                 })
@@ -38,12 +38,12 @@ struct MCChallengeListView: View {
             })
             .navigationBarTitle(Text("Challenges"))
             .navigationBarItems(trailing: Button(action: {
-                self.isPresented.toggle()
+                self.showsSheet.toggle()
             }, label: {
                 Image(systemName: "plus.circle")
                     .imageScale(.large)
             }))
-            .sheet(isPresented: $isPresented, content: {
+            .sheet(isPresented: $showsSheet, content: {
                 MCAddChallengeView(challenges: $manager.challenges)
             })
         })

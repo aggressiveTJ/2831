@@ -9,6 +9,16 @@
 import Foundation
 import SwiftUI
 
+struct LazyView<Content: View>: View {
+    let build: () -> Content
+    init(_ build: @autoclosure @escaping () -> Content) {
+        self.build = build
+    }
+    var body: Content {
+        build()
+    }
+}
+
 extension Date {
     var year: Int {
         Calendar.current.component(.year, from: self)
@@ -27,7 +37,7 @@ extension Date {
         String(format: "%d. %02d", year, month)
     }
     var fileName: String {
-        String(format: "%d_%02d_%02d", year, month, day)
+        String(format: "%d-%02d-%02d", year, month, day)
     }
     var exifDateString: String {
         let calendar = Calendar.current

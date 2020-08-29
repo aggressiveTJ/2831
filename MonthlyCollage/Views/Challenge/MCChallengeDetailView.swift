@@ -7,18 +7,66 @@
 //
 
 import SwiftUI
+import Combine
+
+enum SheetType: Identifiable {
+    case edit
+    case activityView
+    case imagePicker
+    
+    var id: Int {
+        self.hashValue
+    }
+}
 
 struct MCChallengeDetailView: View {
-    @EnvironmentObject var manager: DataManager
     @Environment(\.presentationMode) var presentationMode
     
+    @EnvironmentObject var manager: DataManager
+    @State var selectedDay: Day? {
+        willSet {
+            guard let day = newValue else {
+                return
+            }
+
+            showsActionSheet = false
+            sheetType = nil
+
+            if let _ = day.uiImage {
+                sheetType = .activityView
+            } else {
+                sheetType = .imagePicker
+            }
+        }
+        didSet {
+            guard let day = selectedDay else {
+                return
+            }
+
+            showsActionSheet = false
+            sheetType = nil
+
+            if let _ = day.uiImage {
+                sheetType = .activityView
+            } else {
+                sheetType = .imagePicker
+            }
+        }
+    }
+    @State private var sheetType: SheetType?
+    
     @State private var showsActionSheet = false
-    @State private var showsEditView = false
 
     let challenge: Challenge
     
     var body: some View {
-        ScrollView(content: {
+        let selected = Binding<Day?>(get: {
+            return selectedDay
+        }, set: {
+            selectedDay = $0
+        })
+        
+        return ScrollView(content: {
             VStack(alignment: .leading, spacing: 5, content: {
                 Text(challenge.id.uuidString)
                     .font(.caption)
@@ -27,7 +75,7 @@ struct MCChallengeDetailView: View {
                 Divider()
                 Spacer(minLength: 30)
                 
-                MCCalendarView(challenge: challenge)
+                MCCalendarView(selectedDay: selected, challenge: challenge)
                 
                 Button(action: {
                     if let _ = challenge.complete()?.collageImage {
@@ -43,8 +91,18 @@ struct MCChallengeDetailView: View {
         })
         .navigationBarTitle(Text(challenge.title))
         .navigationBarItems(trailing: moreButton)
-        .sheet(isPresented: $showsEditView, content: {
-            MCAddChallengeView(challenges: $manager.challenges, challenge: challenge)
+        .sheet(item: $sheetType, onDismiss: {
+            self.sheetType = nil
+        }, content: { (type) in
+            if type == .edit {
+                MCAddChallengeView(challenges: $manager.challenges, challenge: challenge)
+            } else if type == .activityView {
+                ActivityViewController(activityItems: [selectedDay?.sharableImage])
+            } else if type == .imagePicker {
+                ImagePicker(sourceType: .photoLibrary, onImagePicked: { (image) in
+                    self.selectedDay?.uiImage = image
+                })
+            }
         })
     }
     
@@ -58,7 +116,7 @@ struct MCChallengeDetailView: View {
         .actionSheet(isPresented: $showsActionSheet, content: {
             ActionSheet(title: Text(""), buttons: [
                 .default(Text("Edit"), action: {
-                    self.showsEditView.toggle()
+                    self.sheetType = .edit
                 }),
                 .default(Text("Remove"), action: {
                     self.challenge.remove()

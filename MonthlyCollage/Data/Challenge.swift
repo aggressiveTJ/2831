@@ -24,7 +24,25 @@ struct Challenge: Identifiable, Equatable, Codable {
     }
     
     fileprivate var baseDirectory: URL? {
-        DataManager.documentDirectory?.appendingPathComponent(id.uuidString, isDirectory: true)
+        DataManager.appLibraryDirectory?.appendingPathComponent(id.uuidString, isDirectory: true)
+    }
+    var days: [Day] {
+        guard let interval = Calendar.current.dateInterval(of: .month, for: startDate) else {
+            return []
+        }
+        
+        var days: [Day] = [Day(date: interval.start, uiImage: image(with: interval.start))]
+        Calendar.current.enumerateDates(startingAfter: interval.start, matching: DateComponents(hour: 0, minute: 0, second: 0), matchingPolicy: .nextTime, using: { (date, _, stop) in
+            if let date = date {
+                if date < interval.end {
+                    days.append(Day(date: date, uiImage: image(with: date)))
+                } else {
+                    stop = true
+                }
+            }
+        })
+        
+        return days
     }
     
     @discardableResult func register() -> Bool {
@@ -47,12 +65,22 @@ struct Challenge: Identifiable, Equatable, Codable {
     
     func complete() -> Achievement? {
         let achievement = Achievement(challenge: self)
-        
-        guard remove() else {
+        guard let path = achievement.imagePath,
+              let image = days.collage(itemSize: CGSize(width: 200, height: 200)),
+              image.save(in: URL(fileURLWithPath: path)) else {
             return nil
         }
         
-        DataManager.shared.achievements.append(achievement)
+//        defer {
+//            remove()
+//        }
+        
+        if let index = DataManager.shared.achievements.firstIndex(of: achievement) {
+            DataManager.shared.achievements[index] = achievement
+        } else {
+            DataManager.shared.achievements.append(achievement)
+        }
+        
         return achievement
     }
     
@@ -67,12 +95,13 @@ struct Challenge: Identifiable, Equatable, Codable {
         
         do {
             if let url = baseDirectory {
-                try FileManager().removeItem(at: url)
+                try FileManager.default.removeItem(at: url)
             }
         } catch {
             print("[ChallengeModel.remove] \(error.localizedDescription)")
             return false
         }
+        
         return true
     }
     

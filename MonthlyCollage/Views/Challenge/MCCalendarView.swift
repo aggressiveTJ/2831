@@ -10,39 +10,37 @@ import SwiftUI
 
 struct MCCalendarView: View {
     @Environment(\.calendar) var calendar
-    @State var days: [Day]
+    @Binding var selectedDay: Day?
     
     private let gridItemLayout = Array(repeating: GridItem(.flexible(minimum: 10, maximum: (UIScreen.main.fixedCoordinateSpace.bounds.width / 8))), count: 7)
 
     let challenge: Challenge
+    var days: [Day] {
+        challenge.days
+    }
     
-    init(challenge: Challenge) {
-        self.challenge = challenge
-        
-        guard let interval = Calendar.current.dateInterval(of: .month, for: challenge.startDate) else {
-            _days = State(initialValue: [])
-            return
-        }
-        
-        var days: [Day] = [Day(date: interval.start, uiImage: challenge.image(with: interval.start))]
-        Calendar.current.enumerateDates(startingAfter: interval.start, matching: DateComponents(hour: 0, minute: 0, second: 0), matchingPolicy: .nextTime, using: { (date, _, stop) in
-            if let date = date {
-                if date < interval.end {
-                    days.append(Day(date: date, uiImage: challenge.image(with: date)))
-                } else {
-                    stop = true
-                }
-            }
-        })
-
-        _days = State(initialValue: days)
+    private var numberOfBlanks: Int {
+        calendar.component(.weekday, from: days[0].date) - 1
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5, content: {
             headerView
-            calendarView
             
+            LazyVGrid(columns: gridItemLayout, content: {
+                ForEach(0..<numberOfBlanks, content: { (_) in
+                    Text("0")
+                        .hidden()
+                })
+                
+                ForEach(days, id: \.self, content: { (day) in
+                    LazyView(DayView(day: day, action: { (selectedDay) in
+                        self.selectedDay = selectedDay
+                    }))
+                })
+            })
+            .id(UUID())
+
             Divider()
         })
     }
@@ -68,42 +66,15 @@ struct MCCalendarView: View {
                 .padding(.bottom, 10)
         })
     }
-    
-    private var calendarView: some View {
-        var numberOfBlanks: Int {
-            calendar.component(.weekday, from: days[0].date) - 1
-        }
-        
-        return LazyVGrid(columns: gridItemLayout, content: {
-            ForEach(0..<numberOfBlanks, content: { (_) in
-                Text("0")
-                    .hidden()
-            })
-            
-            ForEach(days, id: \.self, content: { (day) in
-                DayView(days: $days, challenge: challenge, day: day)
-            })
-        })
-    }
 }
 
-private struct DayView: View {
-    private enum SheetType: Identifiable {
-        case activityController
-        case imagePicker
-        
-        var id: Int {
-            self.hashValue
-        }
-    }
-    
+struct DayView: View {
     @Environment(\.calendar) var calendar
-    @State private var showingModal: SheetType?
-    @State private var showingActionSheet = false
-    @Binding var days: [Day]
     
-    let challenge: Challenge
+    @State private var image: Image?
+    
     let day: Day
+    var action: ((Day) -> Void)?
     
     private var isAvailable: Bool {
         day.date <= Date()
@@ -112,17 +83,13 @@ private struct DayView: View {
     var body: some View {
         ZStack(content: {
             if isAvailable {
-                day.image?
+                image?
                     .aspectRatio(contentMode: .fill)
                     .opacity(0.8)
                     .layoutPriority(-1)
                 
                 Button(action: {
-                    if let _ = day.uiImage {
-                        self.showingModal = .activityController
-                    } else {
-                        self.showingModal = .imagePicker
-                    }
+                    self.action?(self.day)
                 }, label: {
                     if let _ = day.image {
                         VStack(content: {
@@ -147,6 +114,7 @@ private struct DayView: View {
                                             .stroke(Color.gray, lineWidth: 0.5))
                         })
                     }
+                    
                 })
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .buttonStyle(PlainButtonStyle())
@@ -161,39 +129,14 @@ private struct DayView: View {
         })
         .clipShape(RoundedRectangle(cornerRadius: 3))
         .clipped()
-        .sheet(item: $showingModal, content: { (item) in
-            switch item {
-            case .activityController:
-                ActivityViewController(activityItems: [day.sharableImage])
-            case .imagePicker:
-                ImagePicker(sourceType: .savedPhotosAlbum, onImagePicked: { (image) in
-                    guard let index = days.firstIndex(of: day),
-                          let imagePath = challenge.imagePath(with: day.date),
-                          let url = URL(string: imagePath) else {
-                        return
-                    }
-                    
-                    days[index] = Day(date: day.date, uiImage: image)
-                    image.save(in: url)
-                })
-            }
-        })
-        .actionSheet(isPresented: $showingActionSheet, content: {
-            ActionSheet(title: Text(""), buttons: [
-                .default(Text("Share"), action: {
-                    self.showingModal = .activityController
-                }),
-                .default(Text("Remove"), action: {
-                    
-                }),
-                .cancel()
-            ])
+        .onAppear(perform: {
+            self.image = day.image
         })
     }
 }
 
 struct MCCalendarView_Previews: PreviewProvider {
     static var previews: some View {
-        MCCalendarView(challenge: Challenge.preview)
+        MCCalendarView(selectedDay: .constant(nil), challenge: Challenge.preview)
     }
 }

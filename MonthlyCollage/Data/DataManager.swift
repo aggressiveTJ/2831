@@ -11,8 +11,11 @@ import Foundation
 final class DataManager: ObservableObject {
     static let shared: DataManager = DataManager()
     
-    static var documentDirectory: URL? {
-        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("2831", isDirectory: true)
+    static var appLibraryDirectory: URL? {
+        FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first?.appendingPathComponent("2831", isDirectory: true)
+    }
+    static var achievementDirectory: URL? {
+        appLibraryDirectory?.appendingPathComponent("achievements", isDirectory: true)
     }
     
     private init() {
@@ -21,11 +24,11 @@ final class DataManager: ObservableObject {
     private var _challenges: [Challenge] = [] {
         didSet {
             guard oldValue != _challenges,
-                let documentDirectory = DataManager.documentDirectory  else {
+                let appLibraryDirectory = DataManager.appLibraryDirectory else {
                     return
             }
             
-            sync(_challenges, at: documentDirectory.appendingPathComponent(Challenge.fileName))
+            sync(_challenges, at: appLibraryDirectory.appendingPathComponent(Challenge.fileName))
         }
     }
     var challenges: [Challenge] {
@@ -40,7 +43,7 @@ final class DataManager: ObservableObject {
     private var _achievements: [Achievement] = [] {
         didSet {
             guard oldValue != _achievements,
-                let documentDirectory = DataManager.documentDirectory  else {
+                let documentDirectory = DataManager.appLibraryDirectory  else {
                     return
             }
             
@@ -57,7 +60,8 @@ final class DataManager: ObservableObject {
     }
     
     func load() {
-        guard let documentDirectory = DataManager.documentDirectory else {
+        guard let documentDirectory = DataManager.appLibraryDirectory,
+              let achievementDirectory = DataManager.achievementDirectory else {
             fatalError()
         }
         
@@ -66,6 +70,14 @@ final class DataManager: ObservableObject {
         if !fileManager.fileExists(atPath: documentDirectory.path) {
             do {
                 try fileManager.createDirectory(atPath: documentDirectory.path, withIntermediateDirectories: false, attributes: nil)
+            } catch {
+                print("[ChallengeManager.load] \(error.localizedDescription)")
+                fatalError()
+            }
+        }
+        if !fileManager.fileExists(atPath: achievementDirectory.path) {
+            do {
+                try fileManager.createDirectory(atPath: achievementDirectory.path, withIntermediateDirectories: false, attributes: nil)
             } catch {
                 print("[ChallengeManager.load] \(error.localizedDescription)")
                 fatalError()
