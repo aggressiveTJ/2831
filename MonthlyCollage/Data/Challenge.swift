@@ -31,11 +31,11 @@ struct Challenge: Identifiable, Equatable, Codable {
             return []
         }
         
-        var days: [Day] = [Day(date: interval.start, uiImage: image(with: interval.start, original: false))]
+        var days: [Day] = [Day(date: interval.start, in: self)]
         Calendar.current.enumerateDates(startingAfter: interval.start, matching: DateComponents(hour: 0, minute: 0, second: 0), matchingPolicy: .nextTime, using: { (date, _, stop) in
             if let date = date {
                 if date < interval.end {
-                    days.append(Day(date: date, uiImage: image(with: date, original: false)))
+                    days.append(Day(date: date, in: self))
                 } else {
                     stop = true
                 }

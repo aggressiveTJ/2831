@@ -83,10 +83,10 @@
 			children = (
 				A8FC7AFA24DE64EF007FC7B2 /* MCAddChallengeView.swift */,
 				A8DDCB1624DDB4B200610578 /* MCCalendarView.swift */,
+				A845E36724FA2FAB00FEF82C /* MCChallengeDayDetailView.swift */,
 				A8FC7B0524DE7887007FC7B2 /* MCChallengeDetailView.swift */,
 				A842729924DF0B5700EAD1A7 /* MCChallengeListRow.swift */,
 				A8FC7AFC24DE6CF2007FC7B2 /* MCChallengeListView.swift */,
-				A845E36724FA2FAB00FEF82C /* MCChallengeDayDetailView.swift */,
 			);
 			path = Challenge;
 			sourceTree = "<group>";

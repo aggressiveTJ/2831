@@ -10,7 +10,6 @@ import SwiftUI
 
 struct MCAddChallengeView: View {
     @Environment(\.presentationMode) var presentationMode
-    @Binding var challenges: [Challenge]
     
     @State var id: UUID
     @State var title: String
@@ -18,9 +17,7 @@ struct MCAddChallengeView: View {
     
     var challenge: Challenge?
     
-    init(challenges: Binding<[Challenge]>, challenge: Challenge? = nil) {
-        _challenges = challenges
-        
+    init(challenge: Challenge? = nil) {
         self.challenge = challenge
         
         _id = State(initialValue: challenge?.id ?? UUID())
@@ -71,7 +68,7 @@ struct MCAddChallengeView: View {
 
 struct MCAddChallengeView_Previews: PreviewProvider {
     static var previews: some View {
-        MCAddChallengeView(challenges: .constant([]), challenge: Challenge.preview)
+        MCAddChallengeView(challenge: Challenge.preview)
     }
 }
 

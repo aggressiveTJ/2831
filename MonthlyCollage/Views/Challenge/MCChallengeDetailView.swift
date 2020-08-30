@@ -9,38 +9,33 @@
 import SwiftUI
 import Combine
 
-enum SheetType: Identifiable {
-    case edit
-    case activityView
-    case imagePicker
-    
-    var id: Int {
-        self.hashValue
-    }
-}
-
 struct MCChallengeDetailView: View {
+    enum SheetType: Identifiable {
+        case edit
+        case activityView
+        case imagePicker
+        
+        var id: Int {
+            self.hashValue
+        }
+    }
+    
     @Environment(\.presentationMode) var presentationMode
     
-    @EnvironmentObject var manager: DataManager
     @State var selectedDay: Day? {
         didSet {
             guard let day = selectedDay else {
                 return
             }
 
-            showsActionSheet = false
-            sheetType = nil
-
-            if let _ = day.uiImage {
-                sheetType = .activityView
-            } else {
+            if !day.hasImages {
+                showsActionSheet = false
+                sheetType = nil
                 sheetType = .imagePicker
             }
         }
     }
     @State private var sheetType: SheetType?
-    
     @State private var showsActionSheet = false
 
     let challenge: Challenge
@@ -81,16 +76,14 @@ struct MCChallengeDetailView: View {
             self.sheetType = nil
         }, content: { (type) in
             if type == .edit {
-                MCAddChallengeView(challenges: $manager.challenges, challenge: challenge)
+                MCAddChallengeView(challenge: challenge)
             } else if type == .activityView {
-                ActivityViewController(activityItems: [selectedDay?.sharableImage])
+                ActivityViewController(activityItems: [selectedDay?.sharableImage(original: true)])
             } else if type == .imagePicker {
                 ImagePicker(sourceType: .photoLibrary, onImagePicked: { (image) in
                     if let day = self.selectedDay {
-                        day.saveImage(with: image, in: self.challenge)
+                        day.saveImage(with: image)
                     }
-                    
-                    self.selectedDay?.uiImage = image
                 })
             }
         })

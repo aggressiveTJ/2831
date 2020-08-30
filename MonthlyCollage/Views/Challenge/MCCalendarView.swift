@@ -34,7 +34,7 @@ struct MCCalendarView: View {
                 })
                 
                 ForEach(days, id: \.self, content: { (day) in
-                    LazyView(DayView(day: day, action: { (selectedDay) in
+                    LazyView(DayView(day: day, challenge: challenge, action: { (selectedDay) in
                         self.selectedDay = selectedDay
                     }))
                 })
@@ -72,8 +72,9 @@ struct DayView: View {
     @Environment(\.calendar) var calendar
     
     @State private var image: Image?
-    
+
     let day: Day
+    let challenge: Challenge
     var action: ((Day) -> Void)?
     
     private var isAvailable: Bool {
@@ -88,22 +89,28 @@ struct DayView: View {
                     .opacity(0.8)
                     .layoutPriority(-1)
                 
-                Button(action: {
-                    self.action?(self.day)
-                }, label: {
-                    if let _ = day.image {
-                        VStack(content: {
-                            Text(String(calendar.component(.day, from: day.date)))
-                                .font(.body)
-                                .fontWeight(.bold)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 10)
-                                .foregroundColor(.white)
-                                .background(Color.black.opacity(0.7))
-                                .opacity(0.7)
-                                .shadow(radius: 1)
+                if day.hasImages {
+                    NavigationLink(
+                        destination: MCChallengeDayDetailView(challenge: challenge, day: day),
+                        label: {
+                            VStack(content: {
+                                Text(String(calendar.component(.day, from: day.date)))
+                                    .font(.body)
+                                    .fontWeight(.bold)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 10)
+                                    .foregroundColor(.white)
+                                    .background(Color.black.opacity(0.7))
+                                    .opacity(0.7)
+                                    .shadow(radius: 1)
+                            })
                         })
-                    } else {
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .buttonStyle(PlainButtonStyle())
+                } else {
+                    Button(action: {
+                        self.action?(self.day)
+                    }, label: {
                         VStack(alignment: .leading, content: {
                             Text(String(calendar.component(.day, from: day.date)))
                                 .font(.body)
@@ -113,11 +120,10 @@ struct DayView: View {
                                 .overlay(RoundedRectangle(cornerRadius: 3)
                                             .stroke(Color.gray, lineWidth: 0.5))
                         })
-                    }
-                    
-                })
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .buttonStyle(PlainButtonStyle())
+                    })
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .buttonStyle(PlainButtonStyle())
+                }
             } else {
                 Text(String(calendar.component(.day, from: day.date)))
                     .font(.body)
@@ -130,7 +136,9 @@ struct DayView: View {
         .clipShape(RoundedRectangle(cornerRadius: 3))
         .clipped()
         .onAppear(perform: {
-            self.image = day.image
+            if let image = day.thumbnailImage {
+                self.image = Image(uiImage: image)
+            }
         })
     }
 }

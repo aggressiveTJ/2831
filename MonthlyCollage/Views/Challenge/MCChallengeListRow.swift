@@ -12,20 +12,22 @@ struct MCChallengeListRow: View {
     let challenge: Challenge
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10, content: {
-            Text(challenge.title)
-                .font(.title2)
-                .fontWeight(.bold)
-                .lineLimit(1)
-            
-            Divider()
-            
-            Text(challenge.id.uuidString)
-                .font(.caption)
-                .foregroundColor(.gray)
-                .lineLimit(1)
+        NavigationLink(destination: LazyView(MCChallengeDetailView(challenge: challenge)), label: {
+            VStack(alignment: .leading, spacing: 10, content: {
+                Text(challenge.title)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .lineLimit(1)
+                
+                Divider()
+                
+                Text(challenge.id.uuidString)
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                    .lineLimit(1)
+            })
+            .padding(.trailing, 5.0)
         })
-        .padding(.trailing, 5.0)
     }
 }
 

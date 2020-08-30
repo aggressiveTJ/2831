@@ -21,41 +21,26 @@ final class DataManager: ObservableObject {
     private init() {
     }
     
-    private var _challenges: [Challenge] = [] {
+    @Published var challenges: [Challenge] = [] {
         didSet {
-            guard oldValue != _challenges,
+            guard oldValue != challenges,
                 let appLibraryDirectory = DataManager.appLibraryDirectory else {
                     return
             }
             
-            sync(_challenges, at: appLibraryDirectory.appendingPathComponent(Challenge.fileName))
+            sync(challenges, at: appLibraryDirectory.appendingPathComponent(Challenge.fileName))
         }
     }
-    var challenges: [Challenge] {
-        get {
-            _challenges.sorted(by: { $0.startDate > $1.startDate })
-        }
-        set {
-            _challenges = newValue
-        }
-    }
-    
-    private var _achievements: [Achievement] = [] {
+    @Published var achievements: [Achievement] = [] {
         didSet {
-            guard oldValue != _achievements,
+            guard oldValue != achievements,
                 let documentDirectory = DataManager.appLibraryDirectory  else {
                     return
             }
             
+            achievements.sort(by: { $0.startDate > $1.startDate })
+            objectWillChange.send()
             sync(achievements, at: documentDirectory.appendingPathComponent(Achievement.fileName))
-        }
-    }
-    var achievements: [Achievement] {
-        get {
-            _achievements.sorted(by: { $0.startDate > $1.startDate })
-        }
-        set {
-            _achievements = newValue
         }
     }
     
@@ -85,8 +70,8 @@ final class DataManager: ObservableObject {
         }
         
         do {
-            _challenges = try JSONDecoder().decode([Challenge].self, from: try Data(contentsOf: documentDirectory.appendingPathComponent(Challenge.fileName)))
-            _achievements = try JSONDecoder().decode([Achievement].self, from: try Data(contentsOf: documentDirectory.appendingPathComponent(Achievement.fileName)))
+            challenges = try JSONDecoder().decode([Challenge].self, from: try Data(contentsOf: documentDirectory.appendingPathComponent(Challenge.fileName)))
+            achievements = try JSONDecoder().decode([Achievement].self, from: try Data(contentsOf: documentDirectory.appendingPathComponent(Achievement.fileName)))
         } catch {
             print("[ChallengeManager.load] \(error.localizedDescription)")
         }

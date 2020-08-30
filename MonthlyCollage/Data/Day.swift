@@ -14,35 +14,55 @@ struct Day: Equatable, Hashable, Identifiable {
     }
     
     let date: Date
-    var uiImage: UIImage?
-    
-    init(date: Date, uiImage: UIImage? = nil) {
+    var originalImagePath: String?
+    var thumbnailImagePath: String?
+
+    init(date: Date, in challenge: Challenge) {
         self.date = date
-        self.uiImage = uiImage
+        self.originalImagePath = challenge.imagePath(with: date)
+        self.thumbnailImagePath = challenge.imagePath(with: date, original: false)
     }
     
-    var image: Image? {
-        guard let uiImage = uiImage else {
-            return nil
-        }
-        
-        return Image(uiImage: uiImage)
-            .resizable()
+    var originalImage: UIImage? {
+        image(from: originalImagePath)
     }
     
-    func saveImage(with image: UIImage, in challenge: Challenge) -> Bool {
-        guard let originalPath = challenge.imagePath(with: date),
-              let thumbnailPath = challenge.imagePath(with: date, original: false) else {
+    var thumbnailImage: UIImage? {
+        image(from: thumbnailImagePath)
+    }
+    
+    var hasImages: Bool {
+        guard let originalPath = originalImagePath,
+              let thumbnailPath = thumbnailImagePath else {
             return false
         }
         
-        return image.save(in: URL(fileURLWithPath: originalPath)) && image.save(in: URL(fileURLWithPath: thumbnailPath))
+        let fileManager = FileManager()
+        return fileManager.fileExists(atPath: originalPath) && fileManager.fileExists(atPath: thumbnailPath)
+    }
+    
+    private func image(from path: String?) -> UIImage? {
+        guard let path = path,
+              let image = UIImage(contentsOfFile: path) else {
+            return nil
+        }
+        
+        return image
+    }
+    
+    @discardableResult func saveImage(with image: UIImage) -> Bool {
+        guard let originalPath = originalImagePath,
+              let thumbnailPath = thumbnailImagePath else {
+            return false
+        }
+        
+        return image.save(in: URL(fileURLWithPath: originalPath)) && image.save(in: URL(fileURLWithPath: thumbnailPath), original: false)
     }
 }
 
 extension Day {
-    var sharableImage: UIImage? {
-        guard let image = uiImage else {
+    func sharableImage(original: Bool = false) -> UIImage? {
+        guard let image = original ? originalImage : thumbnailImage else {
             return nil
         }
         
@@ -187,7 +207,7 @@ extension Array where Element == Day {
             let rect = CGRect(x: originX, y: originY, width: itemSize.width, height: itemSize.height)
             let imageView = UIImageView(frame: rect)
             
-            if let image = item.sharableImage {
+            if let image = item.sharableImage() {
                 imageView.image = image
                 imageView.contentMode = .scaleAspectFill
             } else {
