@@ -1,5 +1,5 @@
 //
-//  MCAchievementDetailView.swift
+//  AchievementDetailView.swift
 //  MonthlyCollage
 //
 //  Created by TJ on 2020/08/23.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct MCAchievementDetailView: View {
+struct AchievementDetailView: View {
     @State var isPresented = false
     
     let achievement: Achievement
@@ -44,8 +44,8 @@ struct MCAchievementDetailView: View {
     }
 }
 
-struct MCAchievementDetailView_Previews: PreviewProvider {
+struct AchievementDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MCAchievementDetailView(achievement: Achievement.preview)
+        AchievementDetailView(achievement: Achievement.preview)
     }
 }

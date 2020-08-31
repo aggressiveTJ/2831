@@ -1,5 +1,5 @@
 //
-//  MCCalendarView.swift
+//  CalendarView.swift
 //  MonthlyCollage
 //
 //  Created by TJ on 2020/08/08.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct MCCalendarView: View {
+struct CalendarView: View {
     @Environment(\.calendar) var calendar
     @Binding var selectedDay: Day?
     
@@ -92,7 +92,7 @@ struct DayView: View {
                 
                 if day.hasImages {
                     NavigationLink(
-                        destination: MCChallengeDayDetailView(challenge: challenge, day: day),
+                        destination: ChallengeDayDetailView(challenge: challenge, day: day),
                         label: {
                             VStack(content: {
                                 Text(String(calendar.component(.day, from: day.date)))
@@ -144,8 +144,8 @@ struct DayView: View {
     }
 }
 
-struct MCCalendarView_Previews: PreviewProvider {
+struct CalendarView_Previews: PreviewProvider {
     static var previews: some View {
-        MCCalendarView(selectedDay: .constant(nil), challenge: Challenge.preview)
+        CalendarView(selectedDay: .constant(nil), challenge: Challenge.preview)
     }
 }

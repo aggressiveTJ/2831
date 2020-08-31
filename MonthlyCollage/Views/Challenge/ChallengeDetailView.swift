@@ -1,15 +1,16 @@
 //
-//  MCChallengeDetailView.swift
+//  ChallengeDetailView.swift
 //  MonthlyCollage
 //
 //  Created by TJ on 2020/08/08.
 //  Copyright © 2020 TJ. All rights reserved.
 //
 
-import SwiftUI
+import Foundation
 import Combine
+import SwiftUI
 
-struct MCChallengeDetailView: View {
+struct ChallengeDetailView: View {
     enum SheetType: Identifiable {
         case edit
         case activityView
@@ -56,13 +57,13 @@ struct MCChallengeDetailView: View {
                 Divider()
                 Spacer(minLength: 30)
                 
-                MCCalendarView(selectedDay: selected, challenge: challenge)
+                CalendarView(selectedDay: selected, challenge: challenge)
                 
                 Button(action: {
                     if let _ = challenge.complete()?.collageImage {
                         self.presentationMode.wrappedValue.dismiss()
                     } else {
-                        print("[MCChallengeDetailView.body] smt wrong")
+                        print("[ChallengeDetailView.body] smt wrong")
                     }
                 }, label: {
                     Text("Export Collage")
@@ -76,7 +77,7 @@ struct MCChallengeDetailView: View {
             self.sheetType = nil
         }, content: { (type) in
             if type == .edit {
-                MCAddChallengeView(challenge: challenge)
+                AddChallengeView(challenge: challenge)
             } else if type == .activityView {
                 ActivityViewController(activityItems: [selectedDay?.sharableImage(original: true)])
             } else if type == .imagePicker {
@@ -111,11 +112,11 @@ struct MCChallengeDetailView: View {
     }
 }
 
-struct MCChallengeDetailView_Previews: PreviewProvider {
+struct ChallengeDetailView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            MCChallengeDetailView(challenge: Challenge.preview)
-            MCChallengeDetailView(challenge: Challenge.preview)
+            ChallengeDetailView(challenge: Challenge.preview)
+            ChallengeDetailView(challenge: Challenge.preview)
                 .preferredColorScheme(.dark)
         }
     }

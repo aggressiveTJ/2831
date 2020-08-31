@@ -1,5 +1,5 @@
 //
-//  MCAchivementListView.swift
+//  AchivementListView.swift
 //  MonthlyCollage
 //
 //  Created by TJ on 2020/08/23.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct MCAchivementListView: View {
+struct AchivementListView: View {
     @EnvironmentObject var manager: DataManager
     
     @State private var groupedByDate = true
@@ -35,7 +35,7 @@ struct MCAchivementListView: View {
                     Section(header: Text(keys[key]),
                             content: {
                                 ForEach(groupedAchievements[keys[key]] ?? [], content: { (achievement) in
-                                    NavigationLink(destination: MCAchievementDetailView(achievement: achievement), label: {
+                                    NavigationLink(destination: AchievementDetailView(achievement: achievement), label: {
                                         VStack(content: {
                                             Text(groupedByDate ? achievement.title : achievement.startDate.headerTitle)
                                         })
@@ -77,9 +77,9 @@ struct MCAchivementListView: View {
     }
 }
 
-struct MCAchivementListView_Previews: PreviewProvider {
+struct AchivementListView_Previews: PreviewProvider {
     static var previews: some View {
-        MCAchivementListView()
+        AchivementListView()
             .environmentObject(DataManager.shared)
     }
 }

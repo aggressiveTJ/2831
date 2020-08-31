@@ -1,5 +1,5 @@
 //
-//  MCChallengeDayDetailView.swift
+//  ChallengeDayDetailView.swift
 //  MonthlyCollage
 //
 //  Created by TJ on 2020/08/29.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct MCChallengeDayDetailView: View {
+struct ChallengeDayDetailView: View {
     @State private var showsSheet = false
     @State private var viewTitle: String
     @State private var selection: Int
@@ -60,8 +60,8 @@ struct MCChallengeDayDetailView: View {
     }
 }
 
-struct MCChallengeDayDetailView_Previews: PreviewProvider {
+struct ChallengeDayDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MCChallengeDayDetailView(challenge: Challenge.preview, day: Day(date: Date(), in: Challenge.preview))
+        ChallengeDayDetailView(challenge: Challenge.preview, day: Day(date: Date(), in: Challenge.preview))
     }
 }

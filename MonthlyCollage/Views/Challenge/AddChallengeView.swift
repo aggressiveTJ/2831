@@ -1,5 +1,5 @@
 //
-//  MCAddChallengeView.swift
+//  AddChallengeView.swift
 //  MonthlyCollage
 //
 //  Created by TJ on 2020/08/08.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct MCAddChallengeView: View {
+struct AddChallengeView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State var id: UUID
@@ -66,9 +66,9 @@ struct MCAddChallengeView: View {
     }
 }
 
-struct MCAddChallengeView_Previews: PreviewProvider {
+struct AddChallengeView_Previews: PreviewProvider {
     static var previews: some View {
-        MCAddChallengeView(challenge: Challenge.preview)
+        AddChallengeView(challenge: Challenge.preview)
     }
 }
 

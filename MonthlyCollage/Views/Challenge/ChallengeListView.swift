@@ -1,5 +1,5 @@
 //
-//  MCChallengeListView.swift
+//  ChallengeListView.swift
 //  MonthlyCollage
 //
 //  Created by TJ on 2020/08/08.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct MCChallengeListView: View {
+struct ChallengeListView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var showsSheet = false
@@ -32,7 +32,7 @@ struct MCChallengeListView: View {
                     Section(header: Text(keys[key]),
                             content: {
                                 ForEach(groupedChallenge[keys[key]] ?? [], content: { (challenge) in
-                                    MCChallengeListRow(challenge: challenge)
+                                    ChallengeListRow(challenge: challenge)
                                 })
                                 .onDelete(perform: { $0.forEach {
                                     self.delete(at: $0, in: keys[key])
@@ -48,7 +48,7 @@ struct MCChallengeListView: View {
                     .imageScale(.large)
             }))
             .sheet(isPresented: $showsSheet, content: {
-                MCAddChallengeView()
+                AddChallengeView()
                     .onDisappear(perform: {
                         self.groupedChallenge = Self.groupChallenges()
                     })
@@ -66,8 +66,8 @@ struct MCChallengeListView: View {
     }
 }
 
-struct MCChallengeListView_Previews: PreviewProvider {
+struct ChallengeListView_Previews: PreviewProvider {
     static var previews: some View {
-        MCChallengeListView()
+        ChallengeListView()
     }
 }

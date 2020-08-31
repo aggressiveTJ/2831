@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView: MCMainTabView().environmentObject(DataManager.shared))
+            window.rootViewController = UIHostingController(rootView: MainTabView().environmentObject(DataManager.shared))
             self.window = window
             window.makeKeyAndVisible()
             
