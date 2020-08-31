@@ -85,6 +85,7 @@ struct DayView: View {
         ZStack(content: {
             if isAvailable {
                 image?
+                    .resizable()
                     .aspectRatio(contentMode: .fill)
                     .opacity(0.8)
                     .layoutPriority(-1)

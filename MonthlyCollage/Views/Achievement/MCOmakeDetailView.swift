@@ -1,5 +1,5 @@
 //
-//  MCOmakeDetailView.swift
+//  MCAchievementDetailView.swift
 //  MonthlyCollage
 //
 //  Created by TJ on 2020/08/23.
@@ -8,26 +8,19 @@
 
 import SwiftUI
 
-struct MCOmakeDetailView: View {
+struct MCAchievementDetailView: View {
     @State var isPresented = false
     
     let achievement: Achievement
     private let maximumSize = UIScreen.main.fixedCoordinateSpace.bounds.size
     
+    @State var image: Image?
     var body: some View {
         ScrollView(content: {
-            if let image = achievement.collageImage {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
-            } else {
-                Image(systemName: "questionmark.square")
-                    .resizable()
-                    .opacity(0.3)
-                    .aspectRatio(contentMode: .fit)
-                    .padding(100)
-            }
+            image?
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .padding()
         })
         .navigationTitle(achievement.title)
         .navigationBarItems(trailing: Button(action: {
@@ -41,11 +34,18 @@ struct MCOmakeDetailView: View {
                 ActivityViewController(activityItems: [image])
             }
         })
+        .onAppear(perform: {
+            if let collageImage = achievement.collageImage {
+                self.image = Image(uiImage: collageImage)
+            } else {
+                self.image = Image(systemName: "questionmark.square")
+            }
+        })
     }
 }
 
-struct MCOmakeDetailView_Previews: PreviewProvider {
+struct MCAchievementDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MCOmakeDetailView(achievement: Achievement.preview)
+        MCAchievementDetailView(achievement: Achievement.preview)
     }
 }

@@ -17,7 +17,7 @@
 		A845E36824FA2FAB00FEF82C /* MCChallengeDayDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A845E36724FA2FAB00FEF82C /* MCChallengeDayDetailView.swift */; };
 		A86E248524F28FCA006243E6 /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86E248424F28FCA006243E6 /* ActivityViewController.swift */; };
 		A8745B5B24ECB89D00065587 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8745B5A24ECB89D00065587 /* ImagePicker.swift */; };
-		A89521E424F17FC800E1003A /* MCOmakeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89521E324F17FC800E1003A /* MCOmakeListView.swift */; };
+		A89521E424F17FC800E1003A /* MCAchivementListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89521E324F17FC800E1003A /* MCAchivementListView.swift */; };
 		A89521E824F183C400E1003A /* MCOmakeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89521E724F183C400E1003A /* MCOmakeDetailView.swift */; };
 		A8DDCB0324DDAC2900610578 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DDCB0224DDAC2900610578 /* AppDelegate.swift */; };
 		A8DDCB0524DDAC2900610578 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DDCB0424DDAC2900610578 /* SceneDelegate.swift */; };
@@ -41,7 +41,7 @@
 		A845E36724FA2FAB00FEF82C /* MCChallengeDayDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCChallengeDayDetailView.swift; sourceTree = "<group>"; };
 		A86E248424F28FCA006243E6 /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		A8745B5A24ECB89D00065587 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
-		A89521E324F17FC800E1003A /* MCOmakeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCOmakeListView.swift; sourceTree = "<group>"; };
+		A89521E324F17FC800E1003A /* MCAchivementListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCAchivementListView.swift; sourceTree = "<group>"; };
 		A89521E724F183C400E1003A /* MCOmakeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCOmakeDetailView.swift; sourceTree = "<group>"; };
 		A8DDCAFF24DDAC2900610578 /* MonthlyCollage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MonthlyCollage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8DDCB0224DDAC2900610578 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -95,7 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				A89521E724F183C400E1003A /* MCOmakeDetailView.swift */,
-				A89521E324F17FC800E1003A /* MCOmakeListView.swift */,
+				A89521E324F17FC800E1003A /* MCAchivementListView.swift */,
 			);
 			path = Achievement;
 			sourceTree = "<group>";
@@ -239,7 +239,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A89521E424F17FC800E1003A /* MCOmakeListView.swift in Sources */,
+				A89521E424F17FC800E1003A /* MCAchivementListView.swift in Sources */,
 				A842729D24DF0E3A00EAD1A7 /* Extension.swift in Sources */,
 				A8DDCB1724DDB4B200610578 /* MCCalendarView.swift in Sources */,
 				A86E248524F28FCA006243E6 /* ActivityViewController.swift in Sources */,

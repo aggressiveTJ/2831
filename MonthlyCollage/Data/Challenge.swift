@@ -66,8 +66,8 @@ struct Challenge: Identifiable, Equatable, Codable {
     func complete() -> Achievement? {
         let achievement = Achievement(challenge: self)
         guard let path = achievement.imagePath,
-              let image = days.collage(itemSize: CGSize(width: 300, height: 300)),
-              image.save(in: URL(fileURLWithPath: path)) else {
+              let image = days.collage(title: achievement.title),
+              image.save(in: URL(fileURLWithPath: path), square: false) else {
             return nil
         }
         

@@ -79,8 +79,8 @@ extension Calendar {
 }
 
 extension UIImage {
-    @discardableResult func save(in path: URL, original: Bool = true) -> Bool {
-        guard let data = cropAndResize(original: original)?.jpegData(compressionQuality: 1.0) else {
+    @discardableResult func save(in path: URL, original: Bool = true, square: Bool = true) -> Bool {
+        guard let data = cropAndResize(original: original, square: square)?.jpegData(compressionQuality: 1.0) else {
             print("[ERROR] no data")
             return false
         }
@@ -95,11 +95,19 @@ extension UIImage {
         return true
     }
     
-    private func cropAndResize(original: Bool) -> UIImage? {
+    private func cropAndResize(original: Bool, square: Bool = true) -> UIImage? {
         let maxLength: CGFloat = original ? 1000 : 300
         let length = [size.width, size.height, maxLength].min() ?? maxLength
-        let imageView = UIImageView(frame: CGRect(origin: .zero, size: CGSize(width: length, height: length)))
         
+        let rect: CGRect
+        if square {
+            rect = CGRect(origin: .zero, size: CGSize(width: length, height: length))
+        } else {
+            let rate = length / min(size.width, size.height)
+            rect = CGRect(origin: .zero, size: CGSize(width: size.width * rate, height: size.height * rate))
+        }
+        
+        let imageView = UIImageView(frame: rect)
         imageView.contentMode = .scaleAspectFill
         imageView.image = self
         

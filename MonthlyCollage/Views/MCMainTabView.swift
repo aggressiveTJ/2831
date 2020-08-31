@@ -21,10 +21,10 @@ struct MCMainTabView: View {
                 })
                 .tag(0)
             
-            MCOmakeListView()
+            MCAchivementListView()
                 .tabItem({
                     Image(systemName: "square.grid.4x3.fill")
-                    Text("Omake")
+                    Text("Achievements")
                 })
                 .tag(1)
         })
