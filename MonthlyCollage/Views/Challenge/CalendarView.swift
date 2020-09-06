@@ -47,10 +47,16 @@ struct CalendarView: View {
     
     private var headerView: some View {
         VStack(alignment: .center, spacing: 5, content: {
-            Text(challenge.startDate.headerTitle)
-                .font(.largeTitle)
-                .fontWeight(.ultraLight)
-                .padding(.bottom)
+            NavigationLink(
+                destination: ChallengeDayDetailView(challenge: challenge, day: challenge.days[0]),
+                label: {
+                    Text(challenge.startDate.headerTitle)
+                        .font(.largeTitle)
+                        .fontWeight(.ultraLight)
+                        .padding(.bottom)
+                })
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .buttonStyle(PlainButtonStyle())
             
             Divider()
             
@@ -134,8 +140,7 @@ struct DayView: View {
                     .opacity(0.3)
             }
         })
-        .clipShape(RoundedRectangle(cornerRadius: 3))
-        .clipped()
+        .cornerRadius(3)
         .onAppear(perform: {
             if let image = day.thumbnailImage {
                 self.image = Image(uiImage: image)

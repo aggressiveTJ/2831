@@ -15,13 +15,13 @@ struct ChallengeDayDetailView: View {
 
     let challenge: Challenge
     let day: Day
-    let length = UIScreen.main.fixedCoordinateSpace.bounds.width
+    let length = UIScreen.main.fixedCoordinateSpace.bounds.width - 30
     
     init(challenge: Challenge, day: Day) {
         self.challenge = challenge
         self.day = day
         
-        _viewTitle = .init(initialValue: day.date.exifDateString)
+        _viewTitle = .init(initialValue: challenge.title)
         _selection = .init(initialValue: challenge.days.firstIndex(of: day) ?? 0)
     }
     
@@ -30,17 +30,30 @@ struct ChallengeDayDetailView: View {
             TabView(selection: $selection, content: {
                 ForEach(challenge.days, content: { (day) in
                     VStack(content: {
+                        Text(day.date.exifDateString)
+                            .font(.title2)
+                            .fontWeight(.ultraLight)
+                            .multilineTextAlignment(.center)
+                            
                         if let image = day.originalImage {
                             Image(uiImage: image)
                                 .resizable()
                                 .scaledToFit()
+                                .frame(width: length, height: length)
+                                .cornerRadius(8)
                                 .padding()
                         } else {
-                            RoundedRectangle(cornerRadius: 8)
-                                .padding()
+                            VStack(alignment: .center, content: {
+                                Image(systemName: "plus")
+                                    .imageScale(.large)
+                                    .foregroundColor(.gray)
+                            })
+                            .frame(width: length, height: length)
+                            .overlay(RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.gray, lineWidth: 1))
+                            .padding()
                         }
                     })
-                    .frame(width: length, height: length)
                 })
             })
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
@@ -55,7 +68,7 @@ struct ChallengeDayDetailView: View {
                 .imageScale(.large)
         }))
         .sheet(isPresented: $showsSheet, content: {
-            ActivityViewController(activityItems: [day.sharableImage()])
+            ActivityViewController(activityItems: [challenge.days[selection].sharableImage()])
         })
     }
 }
